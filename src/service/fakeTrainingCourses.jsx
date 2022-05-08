@@ -23,20 +23,52 @@ export const trainingCourses = [
 
 export const trainingExerciseRelation = [
   {
+    trainingId: 3,
+    exerciseId: 11,
+  },
+  {
+    trainingId: 3,
+    exerciseId: 10,
+  },
+  {
+    trainingId: 3,
+    exerciseId: 9,
+  },
+  {
+    trainingId: 3,
+    exerciseId: 4,
+  },
+  {
+    trainingId: 1,
+    exerciseId: 31,
+  },
+  {
+    trainingId: 1,
+    exerciseId: 32,
+  },
+  {
+    trainingId: 1,
+    exerciseId: 30,
+  },
+  {
+    trainingId: 1,
+    exerciseId: 29,
+  },
+  {
     trainingId: 2,
     exerciseId: 1,
   },
   {
     trainingId: 2,
-    exerciseId: 3,
+    exerciseId: 16,
   },
   {
     trainingId: 2,
-    exerciseId: 4,
+    exerciseId: 17,
   },
   {
     trainingId: 2,
-    exerciseId: 5,
+    exerciseId: 13,
   },
 ];
 
