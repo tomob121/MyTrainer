@@ -6,9 +6,10 @@ class TrCourseClass extends Component {
     training: {
       id: 0,
       title: '',
-      exercises: [{ bodyPart: '', id: 0, reps: 0, title: '', type: '' }],
+      trainingLines: [],
       duration: 0,
     },
+    counter: 0,
     isEditing: false,
   };
 
@@ -26,7 +27,14 @@ class TrCourseClass extends Component {
     this.setState({ isEditing });
   };
 
-  handleChange = (e) => {};
+  handleLineRepChange = (e, trainingLineId) => {
+    let trainingLine = this.state.training.trainingLines.find(
+      (trainingLine) => trainingLine.id === trainingLineId
+    );
+    let value = e.target.value;
+    trainingLine.reps = value;
+    this.setState({});
+  };
 
   render() {
     const { training, isEditing } = this.state;
@@ -36,13 +44,20 @@ class TrCourseClass extends Component {
         <div className='row pt-3'>
           <div className='col'>
             <h1 className='pb-5'>This is {training.title}</h1>
-            {training.exercises.map((exercise) => (
-              <p key={exercise.id}>
-                {exercise.title}:{' '}
+            {training.trainingLines.map((trainingLine) => (
+              <p key={trainingLine.id}>
+                {trainingLine.exercise.title}:{' '}
                 {isEditing ? (
-                  <input onChange={this.handleChange()} value={exercise.reps} />
+                  <input
+                    className='col-1'
+                    key={trainingLine.id}
+                    onChange={(e) =>
+                      this.handleLineRepChange(e, trainingLine.id)
+                    }
+                    value={trainingLine.reps}
+                  />
                 ) : (
-                  exercise.reps
+                  trainingLine.reps
                 )}
               </p>
             ))}
