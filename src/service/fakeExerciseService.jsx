@@ -1,6 +1,10 @@
-import { getTraining } from './fakeTrainingCourses';
-
 const exercises = [
+  {
+    id: 0,
+    title: '',
+    bodyPart: '',
+    type: '',
+  },
   {
     id: 1,
     title: 'Bench Press',
@@ -201,6 +205,10 @@ export function getExercises() {
 
 export function getExercise(id) {
   return exercises.find((exercise) => exercise.id === id);
+}
+export function getExerciseByTitle(title) {
+  let exercise = exercises.find((exercise) => exercise.title === title);
+  return exercise;
 }
 
 export function deleteExercise(id) {

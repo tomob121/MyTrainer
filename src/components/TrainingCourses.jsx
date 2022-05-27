@@ -18,7 +18,6 @@ const TrainingCourses = () => {
           style={myStyle}
         >
           <Card.Title>{training.title}</Card.Title>
-          {console.log(training.trainingLines)}
           {training.trainingLines.map((trainingLine) => (
             <Card.Text key={trainingLine.id}>
               {trainingLine.exercise.title}

@@ -18,16 +18,6 @@ class HomePage extends Component {
     this.setState({ searchValue: e.currentTarget.value });
   };
 
-  // handleDelete(exercise) {
-  //   let exercises = this.state.exercises;
-  //   let exerciseLoc = exercises.find(
-  //     (exercises) => exercises.title === exercise
-  //   );
-  //   exercises.splice(exercises.indexOf(exerciseLoc), 1);
-
-  //   this.setState({ exercises });
-  // }
-
   renderTable(exercises) {
     const myStyle = {
       borderLeft: 'solid',
@@ -35,12 +25,12 @@ class HomePage extends Component {
       borderTop: 'solid',
       borderBottom: 'solid',
       borderWidth: '1px',
+      borderRadius: '25px',
     };
     return (
-      <Table className='table table-outlined' style={myStyle}>
+      <Table style={myStyle}>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Body Part</th>
             <th>Type</th>
@@ -49,7 +39,6 @@ class HomePage extends Component {
         {exercises.map((exercise) => (
           <tbody key={exercise.id}>
             <tr>
-              <th scope='row'>{exercise.id}</th>
               <td>{exercise.title}</td>
               <td>{exercise.bodyPart}</td>
               <td>{exercise.type}</td>
@@ -81,6 +70,7 @@ class HomePage extends Component {
       <Container className='container'>
         <div className='row justify-content-center'>
           <input
+            style={{ borderRadius: '4px' }}
             autoFocus
             className='m-3 col-8'
             value={this.state.searchValue}
