@@ -25,87 +25,101 @@ export const trainingData = [
 export let trainingLineData = [
   {
     id: 0,
-    trainingId: 3,
-    exerciseId: 11,
+    trainingId: 0,
+    exerciseId: 0,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 1,
     trainingId: 3,
     exerciseId: 11,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 2,
     trainingId: 3,
     exerciseId: 10,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 3,
     trainingId: 3,
     exerciseId: 9,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 4,
     trainingId: 3,
     exerciseId: 4,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 5,
     trainingId: 1,
     exerciseId: 31,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 6,
     trainingId: 1,
     exerciseId: 32,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 7,
     trainingId: 1,
     exerciseId: 30,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 8,
     trainingId: 1,
     exerciseId: 29,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 9,
     trainingId: 2,
     exerciseId: 1,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 10,
     trainingId: 2,
     exerciseId: 16,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 11,
     trainingId: 2,
     exerciseId: 17,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 12,
     trainingId: 2,
     exerciseId: 13,
     reps: 0,
+    restTime: 0,
   },
   {
     id: 13,
     trainingId: 2,
     exerciseId: 31,
     reps: 0,
+    restTime: 0,
   },
 ];
 
@@ -121,8 +135,6 @@ export function getTraining(id) {
       trainingLine.exerciseId
     );
   });
-  // .map((relation) => relation.exerciseId)
-  // .map((exerciseId) => fakeExerciseService.getExercise(exerciseId));
 
   training.trainingLines = trainingLines;
   return training;
@@ -133,13 +145,20 @@ export function deleteTrainingLine(lineId) {
   trainingLineData = trLines;
 }
 
+export function lineDataChange(value, trainingLineId, selectValueChange) {
+  trainingLineData.filter((line) => line.id === trainingLineId);
+  trainingLineData[0][selectValueChange] = parseInt(value);
+}
+
 export function addTrainingLine(trainingId) {
   trainingLineData.push({
     id: trainingLineData[trainingLineData.length - 1].id + 1,
     trainingId: trainingId,
     exerciseId: 0,
     reps: 0,
+    restTime: 0,
   });
+  console.log(trainingLineData);
 }
 
 export function deleteEmptyLines() {

@@ -1,11 +1,24 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import { getTraining, getTrainings } from '../service/fakeTrainingCourses';
+import { getTrainings } from '../service/fakeTrainingCourses';
 import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import './TrainingCourses.css';
 
 const TrainingCourses = () => {
-  const myStyle = { width: '18rem', cursor: 'pointer', color: 'white' };
+  const styles = {
+    cardStyle: {
+      width: '18rem',
+      cursor: 'pointer',
+      color: 'white',
+      maxHeight: 270,
+    },
+    cardTextStyle: {
+      overflow: 'auto',
+      scrollbarColor: 'auto',
+    },
+  };
+
   const trainings = getTrainings();
   const navigate = useNavigate();
   return (
@@ -15,14 +28,16 @@ const TrainingCourses = () => {
           onClick={() => navigate(`/trainingCourses/${training.id}`)}
           className='m-2 p-2 bg-primary'
           key={training.id}
-          style={myStyle}
+          style={styles.cardStyle}
         >
           <Card.Title>{training.title}</Card.Title>
-          {training.trainingLines.map((trainingLine) => (
-            <Card.Text key={trainingLine.id}>
-              {trainingLine.exercise.title}
-            </Card.Text>
-          ))}
+          <div style={styles.cardTextStyle}>
+            {training.trainingLines.map((trainingLine) => (
+              <Card.Text key={trainingLine.id}>
+                {trainingLine.exercise.title}
+              </Card.Text>
+            ))}
+          </div>
           <div style={{ textAlign: 'end' }}>
             Duration: {training.duration} min
           </div>

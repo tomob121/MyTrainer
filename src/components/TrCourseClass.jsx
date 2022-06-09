@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { getExercises, getExercise } from '../service/fakeExerciseService';
 import { getExerciseByTitle } from './../service/fakeExerciseService';
+import { lineDataChange } from './../service/fakeTrainingCourses';
 import {
   addTrainingLine,
   changeTrainingExercise,
@@ -44,6 +45,7 @@ class TrCourseClass extends Component {
       exerciseId: 0,
       reps: 0,
       exercise: getExercise(0),
+      restTime: 0,
     });
     addTrainingLine(parseInt(this.props.id));
     this.setState({ training });
@@ -54,7 +56,7 @@ class TrCourseClass extends Component {
     let newExercise = getExerciseByTitle(e.target.value);
     let newTrainingLines = [];
     for (const iterator of training.trainingLines) {
-      console.log(iterator);
+      iterator.exerciseId = iterator.exercise.id;
       if (iterator.id === trainingLineId) {
         iterator.exercise = newExercise;
         newTrainingLines.push(iterator);
@@ -62,7 +64,6 @@ class TrCourseClass extends Component {
         newTrainingLines.push(iterator);
       }
     }
-
     training.trainingLines[training.trainingLines.length - 1].exerciseId =
       newTrainingLines[newTrainingLines.length - 1].exercise.id;
     training.trainingLines = newTrainingLines;
@@ -70,14 +71,16 @@ class TrCourseClass extends Component {
     changeTrainingExercise(trainingLineId, e.target.value);
   }
 
-  handleLineRepChange = (e, trainingLineId) => {
+  handleLineChange = (e, trainingLineId, selectedLineChange) => {
     let trainingLine = this.state.training.trainingLines.find(
       (trainingLine) => trainingLine.id === trainingLineId
     );
-    let value = e.target.value;
+    let value = parseInt(e.target.value);
     if (value > 999) value = 999;
-    trainingLine.reps = value;
-    this.setState({});
+    if (value === '') value = 0;
+    trainingLine[selectedLineChange] = value;
+    lineDataChange(value, trainingLineId, selectedLineChange);
+    this.setState({ trainingLines: trainingLine });
   };
 
   handleDelete(e) {
@@ -110,12 +113,19 @@ class TrCourseClass extends Component {
 
   render() {
     const { training, isEditing, allExercises } = this.state;
+    const numb = this.props.id;
     const exerciseTitleStyle = {
       color: 'Black',
       fontSize: 20,
       fontWeight: 400,
     };
-    const repNumberStyle = { padding: 0, fontSize: 19 };
+    const repNumberStyle = {
+      padding: 0,
+      fontSize: 19,
+      borderRadius: '3px',
+      borderWidth: 1,
+      textAlign: 'center',
+    };
     const toolTipMessage = {
       fontStyle: 'italic',
       opacity: 0.5,
@@ -125,7 +135,7 @@ class TrCourseClass extends Component {
       <Container>
         <div className='row pt-3'>
           <div className='col'>
-            <h1 className='pb-5'>This is {training.title}</h1>
+            <h1 className='pb-5'>{training.title}</h1>
             {training.trainingLines.map((trainingLine) => (
               <div
                 className={isEditing ? 'm-3 row col-auto' : 'm-3 row col-auto '}
@@ -160,10 +170,10 @@ class TrCourseClass extends Component {
                         type={'number'}
                         max={999}
                         className='col-auto  '
-                        style={{ textAlign: 'center' }}
+                        style={repNumberStyle}
                         key={trainingLine.id}
                         onChange={(e) =>
-                          this.handleLineRepChange(e, trainingLine.id)
+                          this.handleLineChange(e, trainingLine.id, 'reps')
                         }
                         value={trainingLine.reps}
                       />
@@ -171,9 +181,6 @@ class TrCourseClass extends Component {
                         onClick={(e) => this.handleDelete(trainingLine)}
                         style={{ marginLeft: 30 }}
                         className='btn-danger'
-                        disabled={
-                          training.trainingLines.length >= 2 ? false : true
-                        }
                       >
                         Delete
                       </Button>
@@ -193,26 +200,63 @@ class TrCourseClass extends Component {
                     </div>
                   )}
                 </div>
+                <div className='row'>
+                  {isEditing ? (
+                    <div>
+                      Rest time:
+                      <input
+                        onFocus={this.handleFocus}
+                        className='col-1 m-1 '
+                        style={repNumberStyle}
+                        min={0}
+                        type={'number'}
+                        max={999}
+                        value={trainingLine.restTime}
+                        onChange={(e) =>
+                          this.handleLineChange(e, trainingLine.id, 'restTime')
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <div className='row pt-1'>
+                      <div className='col-auto'>
+                        Rest Time: {trainingLine.restTime}
+                      </div>
+                      <div className='col-auto' style={toolTipMessage}>
+                        Seconds
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
           <div className='col-3'>
             <div>
-              <Button className='col-5' onClick={() => this.handleEdit()}>
+              <Button className='col-5 m-1' onClick={() => this.handleEdit()}>
                 {this.state.isEditing ? 'Save' : 'Edit'}
               </Button>
             </div>
-            <div>
+            <div className='col-auto'>
               {this.state.isEditing ? (
                 <Button
                   onClick={() => this.handleAddExercise()}
                   style={{ color: 'white' }}
-                  className='btn btn-success mt-3 col-5'
+                  className='btn btn-secondary m-1 col-5'
                 >
                   Add Exercise
                 </Button>
               ) : (
-                ''
+                <Button
+                  onClick={() =>
+                    setTimeout(() =>
+                      this.props.navigate(`/trainingCourses/${numb}/start`)
+                    )
+                  }
+                  className='col-5 m-1 btn-success'
+                >
+                  Start
+                </Button>
               )}
             </div>
           </div>

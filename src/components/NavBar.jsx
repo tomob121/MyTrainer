@@ -10,7 +10,7 @@ const NavBar = () => {
             Home
           </NavLink>
           <NavLink className='nav-link nav=item' to='trainingCourses'>
-            Trainign Courses
+            Training Courses
           </NavLink>
         </ul>
       </nav>
