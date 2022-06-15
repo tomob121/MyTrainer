@@ -10,6 +10,7 @@ import {
   deleteTrainingLine,
   trainingLineData,
 } from '../service/fakeTrainingCourses';
+import { type } from '@testing-library/user-event/dist/type';
 
 class TrCourseClass extends Component {
   state = {
@@ -18,6 +19,7 @@ class TrCourseClass extends Component {
       title: '',
       trainingLines: [],
       duration: 0,
+      note: '',
     },
     allExercises: [
       {
@@ -46,7 +48,9 @@ class TrCourseClass extends Component {
       reps: 0,
       exercise: getExercise(0),
       restTime: 0,
+      note: '',
     });
+
     addTrainingLine(parseInt(this.props.id));
     this.setState({ training });
   }
@@ -75,9 +79,13 @@ class TrCourseClass extends Component {
     let trainingLine = this.state.training.trainingLines.find(
       (trainingLine) => trainingLine.id === trainingLineId
     );
-    let value = parseInt(e.target.value);
-    if (value > 999) value = 999;
-    if (value === '') value = 0;
+    let value = e.target.value;
+    if ((selectedLineChange === 'restTime') | (selectedLineChange === 'reps')) {
+      if (value > 999) value = 999;
+      if (value === '') value = 0;
+      parseInt(value);
+    }
+
     trainingLine[selectedLineChange] = value;
     lineDataChange(value, trainingLineId, selectedLineChange);
     this.setState({ trainingLines: trainingLine });
@@ -114,21 +122,24 @@ class TrCourseClass extends Component {
   render() {
     const { training, isEditing, allExercises } = this.state;
     const numb = this.props.id;
-    const exerciseTitleStyle = {
-      color: 'Black',
-      fontSize: 20,
-      fontWeight: 400,
-    };
-    const repNumberStyle = {
-      padding: 0,
-      fontSize: 19,
-      borderRadius: '3px',
-      borderWidth: 1,
-      textAlign: 'center',
-    };
-    const toolTipMessage = {
-      fontStyle: 'italic',
-      opacity: 0.5,
+
+    const style = {
+      exerciseTitleStyle: {
+        color: 'Black',
+        fontSize: 20,
+        fontWeight: 400,
+      },
+      repNumberStyle: {
+        padding: 0,
+        fontSize: 19,
+        borderRadius: '3px',
+        borderWidth: 1,
+        textAlign: 'center',
+      },
+      toolTipMessage: {
+        fontStyle: 'italic',
+        opacity: 0.5,
+      },
     };
 
     return (
@@ -138,7 +149,7 @@ class TrCourseClass extends Component {
             <h1 className='pb-5'>{training.title}</h1>
             {training.trainingLines.map((trainingLine) => (
               <div
-                className={isEditing ? 'm-3 row col-auto' : 'm-3 row col-auto '}
+                className={isEditing ? 'm-3 row' : 'm-3 row'}
                 key={trainingLine.id}
               >
                 {isEditing ? (
@@ -157,49 +168,71 @@ class TrCourseClass extends Component {
                 {isEditing ? (
                   ''
                 ) : (
-                  <div className='col-auto' style={exerciseTitleStyle}>
+                  <div className='col-auto' style={style.exerciseTitleStyle}>
                     {trainingLine.exercise.title} :{' '}
                   </div>
                 )}{' '}
                 <div className='col-auto row'>
                   {isEditing ? (
-                    <div className='col-auto'>
-                      <input
-                        onFocus={this.handleFocus}
-                        min={0}
-                        type={'number'}
-                        max={999}
-                        className='col-auto  '
-                        style={repNumberStyle}
-                        key={trainingLine.id}
-                        onChange={(e) =>
-                          this.handleLineChange(e, trainingLine.id, 'reps')
-                        }
-                        value={trainingLine.reps}
-                      />
-                      <Button
-                        onClick={(e) => this.handleDelete(trainingLine)}
-                        style={{ marginLeft: 30 }}
-                        className='btn-danger'
-                      >
-                        Delete
-                      </Button>
+                    <div className='row'>
+                      <div className='col-auto'>
+                        <input
+                          onFocus={this.handleFocus}
+                          min={0}
+                          type={'number'}
+                          max={999}
+                          style={style.repNumberStyle}
+                          key={trainingLine.id}
+                          onChange={(e) =>
+                            this.handleLineChange(e, trainingLine.id, 'reps')
+                          }
+                          value={trainingLine.reps}
+                        />
+                        <Button
+                          onClick={(e) => this.handleDelete(trainingLine)}
+                          style={{ marginLeft: 30 }}
+                          className='btn-danger'
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                      <div className='col-2'>
+                        <input
+                          onFocus={this.handleFocus}
+                          maxlength='80'
+                          style={style.repNumberStyle}
+                          value={trainingLine.note}
+                          placeholder={'Enter note here'}
+                          onChange={(e) =>
+                            this.handleLineChange(e, trainingLine.id, 'note')
+                          }
+                        />
+                      </div>
                     </div>
                   ) : (
-                    <div className='col-auto' style={repNumberStyle}>
-                      {trainingLine.reps}
+                    <div className='col-auto row'>
+                      <div className='col-auto' style={style.repNumberStyle}>
+                        {trainingLine.reps}
+                      </div>
                     </div>
                   )}
                   {isEditing ? (
                     ''
                   ) : (
-                    <div className='col-auto pt-1' style={toolTipMessage}>
+                    <div className='col-auto pt-1' style={style.toolTipMessage}>
                       {trainingLine.exercise.type.toLowerCase() === 'endure'
                         ? 'Seconds'
                         : 'Reps'}
                     </div>
                   )}
                 </div>
+                {isEditing ? (
+                  ''
+                ) : (
+                  <div className='col pt-1'>
+                    {trainingLine.note ? 'Note: ' : ''} {trainingLine.note}
+                  </div>
+                )}
                 <div className='row'>
                   {isEditing ? (
                     <div>
@@ -207,7 +240,7 @@ class TrCourseClass extends Component {
                       <input
                         onFocus={this.handleFocus}
                         className='col-1 m-1 '
-                        style={repNumberStyle}
+                        style={style.repNumberStyle}
                         min={0}
                         type={'number'}
                         max={999}
@@ -222,7 +255,7 @@ class TrCourseClass extends Component {
                       <div className='col-auto'>
                         Rest Time: {trainingLine.restTime}
                       </div>
-                      <div className='col-auto' style={toolTipMessage}>
+                      <div className='col-auto' style={style.toolTipMessage}>
                         Seconds
                       </div>
                     </div>

@@ -4,6 +4,8 @@ import { getTrainings } from '../service/fakeTrainingCourses';
 import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './TrainingCourses.css';
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 
 const TrainingCourses = () => {
   const styles = {
@@ -14,8 +16,7 @@ const TrainingCourses = () => {
       maxHeight: 270,
     },
     cardTextStyle: {
-      overflow: 'auto',
-      scrollbarColor: 'auto',
+      maxHeight: 200,
     },
   };
 
@@ -31,13 +32,15 @@ const TrainingCourses = () => {
           style={styles.cardStyle}
         >
           <Card.Title>{training.title}</Card.Title>
-          <div style={styles.cardTextStyle}>
+
+          <SimpleBar autoHide={false} style={styles.cardTextStyle}>
             {training.trainingLines.map((trainingLine) => (
               <Card.Text key={trainingLine.id}>
                 {trainingLine.exercise.title}
               </Card.Text>
             ))}
-          </div>
+          </SimpleBar>
+
           <div style={{ textAlign: 'end' }}>
             Duration: {training.duration} min
           </div>

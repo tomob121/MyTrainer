@@ -20,6 +20,12 @@ export const trainingData = [
     trainingLines: [],
     duration: 40,
   },
+  {
+    id: 4,
+    title: 'Empty',
+    trainingLines: [],
+    duration: 0,
+  },
 ];
 
 export let trainingLineData = [
@@ -29,34 +35,39 @@ export let trainingLineData = [
     exerciseId: 0,
     reps: 0,
     restTime: 0,
+    note: '',
   },
   {
     id: 1,
     trainingId: 3,
     exerciseId: 11,
-    reps: 0,
-    restTime: 0,
+    reps: 1,
+    restTime: 5,
+    note: 'first note',
   },
   {
     id: 2,
     trainingId: 3,
     exerciseId: 10,
-    reps: 0,
-    restTime: 0,
+    reps: 2,
+    restTime: 10,
+    note: 'second note',
   },
   {
     id: 3,
     trainingId: 3,
     exerciseId: 9,
-    reps: 0,
-    restTime: 0,
+    reps: 3,
+    restTime: 15,
+    note: 'thrid note',
   },
   {
     id: 4,
     trainingId: 3,
     exerciseId: 4,
-    reps: 0,
-    restTime: 0,
+    reps: 4,
+    restTime: 20,
+    note: '80 chars is max letters you can write',
   },
   {
     id: 5,
@@ -64,6 +75,7 @@ export let trainingLineData = [
     exerciseId: 31,
     reps: 0,
     restTime: 0,
+    note: '',
   },
   {
     id: 6,
@@ -71,6 +83,7 @@ export let trainingLineData = [
     exerciseId: 32,
     reps: 0,
     restTime: 0,
+    note: '',
   },
   {
     id: 7,
@@ -78,6 +91,7 @@ export let trainingLineData = [
     exerciseId: 30,
     reps: 0,
     restTime: 0,
+    note: '',
   },
   {
     id: 8,
@@ -85,6 +99,7 @@ export let trainingLineData = [
     exerciseId: 29,
     reps: 0,
     restTime: 0,
+    note: '',
   },
   {
     id: 9,
@@ -92,6 +107,7 @@ export let trainingLineData = [
     exerciseId: 1,
     reps: 0,
     restTime: 0,
+    note: '',
   },
   {
     id: 10,
@@ -99,6 +115,7 @@ export let trainingLineData = [
     exerciseId: 16,
     reps: 0,
     restTime: 0,
+    note: '',
   },
   {
     id: 11,
@@ -106,6 +123,7 @@ export let trainingLineData = [
     exerciseId: 17,
     reps: 0,
     restTime: 0,
+    note: '',
   },
   {
     id: 12,
@@ -113,6 +131,7 @@ export let trainingLineData = [
     exerciseId: 13,
     reps: 0,
     restTime: 0,
+    note: '',
   },
   {
     id: 13,
@@ -120,6 +139,7 @@ export let trainingLineData = [
     exerciseId: 31,
     reps: 0,
     restTime: 0,
+    note: '',
   },
 ];
 
@@ -146,8 +166,10 @@ export function deleteTrainingLine(lineId) {
 }
 
 export function lineDataChange(value, trainingLineId, selectValueChange) {
-  trainingLineData.filter((line) => line.id === trainingLineId);
-  trainingLineData[0][selectValueChange] = parseInt(value);
+  let trainings = trainingLineData.filter((line) => line.id === trainingLineId);
+  if (value === Number) parseInt(value);
+
+  trainings[0][selectValueChange] = value;
 }
 
 export function addTrainingLine(trainingId) {
@@ -157,8 +179,8 @@ export function addTrainingLine(trainingId) {
     exerciseId: 0,
     reps: 0,
     restTime: 0,
+    note: '',
   });
-  console.log(trainingLineData);
 }
 
 export function deleteEmptyLines() {
