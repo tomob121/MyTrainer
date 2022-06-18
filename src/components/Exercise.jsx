@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getTraining } from './../service/fakeTrainingCourses';
 import { Container, Button } from 'react-bootstrap';
@@ -15,6 +15,18 @@ const Exercise = () => {
     })
   );
 
+  const styles = {
+    paragraphBorder: {
+      border: 2,
+      borderStyle: 'solid',
+      borderColor: 'DarkSlateGrey',
+      height: 52,
+      backgroundColor: 'HoneyDew',
+      color: 'black',
+      borderRadius: 5,
+    },
+  };
+
   let navigate = useNavigate();
 
   function nextExercise() {
@@ -30,7 +42,7 @@ const Exercise = () => {
   function handlecountdown() {
     setTimeout(() => {
       setContDown([...countDown]);
-      countDown[exerciseStage].restTime -= 0.5;
+      countDown[exerciseStage].restTime -= 1;
       if (countDown[exerciseStage].restTime <= -1) nextExercise();
     }, 1000);
   }
@@ -75,6 +87,22 @@ const Exercise = () => {
           </div>
         </div>
       </div>
+      {isRenderingRest ? (
+        ''
+      ) : (
+        <div className='row'>
+          <div className='col-4'></div>
+          <div className='col-3'>
+            {training.trainingLines[exerciseStage].note.length === 0 ? (
+              ''
+            ) : (
+              <p style={styles.paragraphBorder}>
+                {training.trainingLines[exerciseStage].note}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </Container>
   );
 };

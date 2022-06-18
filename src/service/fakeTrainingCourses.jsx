@@ -7,6 +7,7 @@ export const trainingData = [
     title: 'Core body workout',
     trainingLines: [],
     duration: 20,
+    timer: []
   },
   {
     id: 2,
