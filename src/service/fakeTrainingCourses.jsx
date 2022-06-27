@@ -148,9 +148,11 @@ export let trainingLineData = [
 ];
 
 export function updateLineData(training) {
-  let unfilteredTrainingLineData = trainingLineData.filter(
-    (line) => line.trainingId === training.id
+  console.log(training);
+  let unfilteredTrainingLineData = training.trainingLines.filter(
+    (line) => line.trainingId !== trainingLineData.trainingId
   );
+
   let filteredTrainingLineData = trainingLineData.filter(
     (line) => line.trainingId != training.id
   );
@@ -159,7 +161,7 @@ export function updateLineData(training) {
     ...unfilteredTrainingLineData,
     ...filteredTrainingLineData,
   ];
-  console.log(trainingLineData);
+
   return trainingLineData;
 }
 

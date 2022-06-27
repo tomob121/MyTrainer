@@ -115,7 +115,7 @@ class TrCourseClass extends Component {
       (line) => line.exerciseId !== 0
     );
     training.trainingLines = filteredTrainingLine;
-    // deleteEmptyLines();
+    deleteEmptyLines();
 
     updateLineData(this.state.training);
 
