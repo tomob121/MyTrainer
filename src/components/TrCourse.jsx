@@ -1,14 +1,15 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getTraining } from '../service/fakeTrainingCourses';
 import TrCourseClass from './TrCourseClass';
 
-const TrCourseHOP = () => {
+const TrCourseHOP = ({ trainingsProps }) => {
   const { id } = useParams();
-  const training = getTraining(parseInt(id));
+  const training = trainingsProps.filter(
+    (training) => training.id === parseInt(id)
+  );
   const navigate = useNavigate();
 
-  return <TrCourseClass id={id} training={training} navigate={navigate} />;
+  return <TrCourseClass id={id} training={training[0]} navigate={navigate} />;
 };
 
 export default TrCourseHOP;

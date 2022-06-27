@@ -7,7 +7,7 @@ import './TrainingCourses.css';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 
-const TrainingCourses = () => {
+const TrainingCourses = ({ trainingsProps }) => {
   const styles = {
     cardStyle: {
       width: '18rem',
@@ -20,10 +20,47 @@ const TrainingCourses = () => {
     },
   };
 
-  const trainings = getTrainings();
+  const trainings = trainingsProps;
   const navigate = useNavigate();
+
+  function convertHMS(value) {
+    const sec = parseInt(value, 10); // convert value to number if it's string
+    let hours = Math.floor(sec / 3600); // get hours
+    let minutes = Math.floor((sec - hours * 3600) / 60); // get minutes
+    let seconds = sec - hours * 3600 - minutes * 60; //  get seconds
+    // add 0 if value < 10; Example: 2 => 02
+    if (hours < 10) {
+      hours = '0' + hours;
+    }
+    if (minutes < 10) {
+      minutes = '0' + minutes;
+    }
+    if (seconds < 10) {
+      seconds = '0' + seconds;
+    }
+
+    return minutes + ':' + seconds; // Return is MM : SS
+  }
+
+  function handleAvrageTrainingDuration(trainingID) {
+    let filteredTraining = trainings.filter(
+      (training) => training.id === trainingID
+    );
+
+    let sum = filteredTraining[0].timer.reduce(
+      (partialSum, a) => partialSum + a,
+      0
+    );
+    sum = sum / filteredTraining[0].timer.length;
+
+    if (!sum) sum = 0;
+
+    return convertHMS(sum);
+  }
+
   return (
     <Container>
+      {console.log()}
       {trainings.map((training) => (
         <Card
           onClick={() => navigate(`/trainingCourses/${training.id}`)}
@@ -42,7 +79,7 @@ const TrainingCourses = () => {
           </SimpleBar>
 
           <div style={{ textAlign: 'end' }}>
-            Duration: {training.duration} min
+            Avg. Duration: {handleAvrageTrainingDuration(training.id)}
           </div>
         </Card>
       ))}

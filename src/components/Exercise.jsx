@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getTraining } from './../service/fakeTrainingCourses';
 import { Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const Exercise = () => {
+const Exercise = ({ trainingsProps }) => {
   const { id } = useParams();
-  const [training] = useState(getTraining(parseInt(id)));
+  const [training, setTrainig] = trainingsProps.filter(
+    (training) => training.id === parseInt(id)
+  );
   const [exerciseStage, setExerciseStage] = useState(0);
   const [isRenderingRest, setIsRenderingRest] = useState(false);
   let [countDown, setContDown] = useState(
@@ -14,6 +15,7 @@ const Exercise = () => {
       return { id: line.id, restTime: line.restTime };
     })
   );
+  let [timer, setTimer] = useState(0);
 
   const styles = {
     paragraphBorder: {
@@ -29,7 +31,16 @@ const Exercise = () => {
 
   let navigate = useNavigate();
 
+  function handleTimer() {
+    setTimeout(() => {
+      training.timer[training.timer.length - 1] += 1;
+      setTimer((timer += 1));
+    }, 1000);
+  }
+
   function nextExercise() {
+    if (exerciseStage === countDown.length - 1)
+      navigate(`/trainingCourses/${id}/end`);
     setExerciseStage(exerciseStage + 1);
     setIsRenderingRest(!isRenderingRest);
   }
@@ -40,12 +51,17 @@ const Exercise = () => {
   }
 
   function handlecountdown() {
-    setTimeout(() => {
-      setContDown([...countDown]);
-      countDown[exerciseStage].restTime -= 1;
-      if (countDown[exerciseStage].restTime <= -1) nextExercise();
-    }, 1000);
+    if (isRenderingRest) {
+      setTimeout(() => {
+        setContDown([...countDown]);
+        countDown[exerciseStage].restTime -= 1;
+        if (countDown[exerciseStage].restTime <= -1) nextExercise();
+        return;
+      }, 1000);
+    }
   }
+  useEffect(() => handleTimer(), [timer]);
+  useEffect(() => handlecountdown(), [countDown, isRenderingRest]);
 
   return (
     <Container>
@@ -53,10 +69,7 @@ const Exercise = () => {
         <div className='col-5'></div>
         {isRenderingRest ? (
           <div className='row col-3 mt-5'>
-            <div className='col-auto'>
-              Rest
-              {handlecountdown()}
-            </div>
+            <div className='col-auto'>Rest</div>
             <div className='col-auto'>{countDown[exerciseStage].restTime}</div>
           </div>
         ) : (

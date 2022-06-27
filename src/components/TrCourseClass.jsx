@@ -10,7 +10,6 @@ import {
   deleteTrainingLine,
   trainingLineData,
 } from '../service/fakeTrainingCourses';
-import { type } from '@testing-library/user-event/dist/type';
 
 class TrCourseClass extends Component {
   state = {
@@ -19,7 +18,7 @@ class TrCourseClass extends Component {
       title: '',
       trainingLines: [],
       duration: 0,
-      note: '',
+      timer: [],
     },
     allExercises: [
       {
@@ -101,6 +100,8 @@ class TrCourseClass extends Component {
     this.setState({ training });
   }
 
+  handleAddTimer() {}
+
   handleEdit = () => {
     let training = this.state.training;
     let isEditing = false;
@@ -119,9 +120,19 @@ class TrCourseClass extends Component {
     this.setState({ training });
   };
 
+  handleStart(training) {
+    const numb = this.props.id;
+    this.handleAddTimer();
+    setTimeout(
+      () => training.timer.push(0),
+      this.props.navigate(`/trainingCourses/${numb}/start`)
+    );
+  }
+
   render() {
     const { training, isEditing, allExercises } = this.state;
-    const numb = this.props.id;
+
+    let time = new Date();
 
     const style = {
       exerciseTitleStyle: {
@@ -199,7 +210,7 @@ class TrCourseClass extends Component {
                       <div className='col-2'>
                         <input
                           onFocus={this.handleFocus}
-                          maxlength='80'
+                          maxLength='80'
                           style={style.repNumberStyle}
                           value={trainingLine.note}
                           placeholder={'Enter note here'}
@@ -281,11 +292,7 @@ class TrCourseClass extends Component {
                 </Button>
               ) : (
                 <Button
-                  onClick={() =>
-                    setTimeout(() =>
-                      this.props.navigate(`/trainingCourses/${numb}/start`)
-                    )
-                  }
+                  onClick={() => this.handleStart(training)}
                   className='col-5 m-1 btn-success'
                 >
                   Start
@@ -293,9 +300,6 @@ class TrCourseClass extends Component {
               )}
             </div>
           </div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          Approximate duration {training.duration} min
         </div>
       </Container>
     );

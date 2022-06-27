@@ -7,25 +7,28 @@ export const trainingData = [
     title: 'Core body workout',
     trainingLines: [],
     duration: 20,
-    timer: []
+    timer: [],
   },
   {
     id: 2,
     title: 'Upper body workout',
     trainingLines: [],
     duration: 30,
+    timer: [],
   },
   {
     id: 3,
     title: 'Lower body workout',
     trainingLines: [],
     duration: 40,
+    timer: [],
   },
   {
     id: 4,
     title: 'Empty',
     trainingLines: [],
     duration: 0,
+    timer: [],
   },
 ];
 
