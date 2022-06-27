@@ -46,6 +46,8 @@ const Exercise = ({ trainingsProps }) => {
   }
 
   function nextExerciseSkipRest() {
+    if (exerciseStage === countDown.length - 1)
+      navigate(`/trainingCourses/${id}/end`);
     setExerciseStage(exerciseStage + 1);
     setIsRenderingRest(false);
   }

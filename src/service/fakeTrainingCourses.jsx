@@ -147,6 +147,22 @@ export let trainingLineData = [
   },
 ];
 
+export function updateLineData(training) {
+  let unfilteredTrainingLineData = trainingLineData.filter(
+    (line) => line.trainingId === training.id
+  );
+  let filteredTrainingLineData = trainingLineData.filter(
+    (line) => line.trainingId != training.id
+  );
+
+  trainingLineData = [
+    ...unfilteredTrainingLineData,
+    ...filteredTrainingLineData,
+  ];
+  console.log(trainingLineData);
+  return trainingLineData;
+}
+
 export function getTraining(id) {
   let training = trainingData.find(
     (trainingCourse) => trainingCourse.id === id

@@ -9,6 +9,7 @@ import {
   deleteEmptyLines,
   deleteTrainingLine,
   trainingLineData,
+  updateLineData,
 } from '../service/fakeTrainingCourses';
 
 class TrCourseClass extends Component {
@@ -71,7 +72,7 @@ class TrCourseClass extends Component {
       newTrainingLines[newTrainingLines.length - 1].exercise.id;
     training.trainingLines = newTrainingLines;
     this.setState({ training });
-    changeTrainingExercise(trainingLineId, e.target.value);
+    // changeTrainingExercise(trainingLineId, e.target.value);
   }
 
   handleLineChange = (e, trainingLineId, selectedLineChange) => {
@@ -86,7 +87,7 @@ class TrCourseClass extends Component {
     }
 
     trainingLine[selectedLineChange] = value;
-    lineDataChange(value, trainingLineId, selectedLineChange);
+    // lineDataChange(value, trainingLineId, selectedLineChange);
     this.setState({ trainingLines: trainingLine });
   };
 
@@ -95,7 +96,7 @@ class TrCourseClass extends Component {
     training.trainingLines = training.trainingLines.filter(
       (line) => line.id !== e.id
     );
-    deleteTrainingLine(e.id);
+    // deleteTrainingLine(e.id);
 
     this.setState({ training });
   }
@@ -114,13 +115,19 @@ class TrCourseClass extends Component {
       (line) => line.exerciseId !== 0
     );
     training.trainingLines = filteredTrainingLine;
-    deleteEmptyLines();
+    // deleteEmptyLines();
+
+    updateLineData(this.state.training);
 
     this.setState({ isEditing });
     this.setState({ training });
   };
 
   handleStart(training) {
+    if (training.trainingLines.length === 0) {
+      alert('No exercises in the training');
+      return;
+    }
     const numb = this.props.id;
     this.handleAddTimer();
     setTimeout(
@@ -129,10 +136,16 @@ class TrCourseClass extends Component {
     );
   }
 
+  handleTitleChange(e) {
+    let training = this.state.training;
+    let targetValue = e.target.value;
+    this.state.training.title = targetValue;
+
+    this.setState({ training });
+  }
+
   render() {
     const { training, isEditing, allExercises } = this.state;
-
-    let time = new Date();
 
     const style = {
       exerciseTitleStyle: {
@@ -151,13 +164,30 @@ class TrCourseClass extends Component {
         fontStyle: 'italic',
         opacity: 0.5,
       },
+      h1element: {
+        fontWeight: 500,
+        fontSize: '39',
+        borderRadius: 4,
+      },
     };
 
     return (
       <Container>
         <div className='row pt-3'>
           <div className='col'>
-            <h1 className='pb-5'>{training.title}</h1>
+            {isEditing ? (
+              <h1 className='pb-5'>
+                <input
+                  style={style.h1element}
+                  maxLength={50}
+                  value={training.title}
+                  onChange={(e) => this.handleTitleChange(e)}
+                />
+              </h1>
+            ) : (
+              <h1 className='pb-5'>{training.title}</h1>
+            )}
+
             {training.trainingLines.map((trainingLine) => (
               <div
                 className={isEditing ? 'm-3 row' : 'm-3 row'}
