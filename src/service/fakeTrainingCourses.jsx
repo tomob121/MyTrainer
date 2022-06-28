@@ -147,6 +147,19 @@ export let trainingLineData = [
   },
 ];
 
+export function addTrainingLine(trainingId) {
+  trainingLineData.push({
+    id: trainingLineData[trainingLineData.length - 1].id + 1,
+    trainingId: trainingId,
+    exerciseId: 0,
+    reps: 0,
+    restTime: 0,
+    note: '',
+  });
+
+  return trainingLineData;
+}
+
 export function updateLineData(training) {
   console.log(training);
   let unfilteredTrainingLineData = training.trainingLines.filter(
@@ -158,8 +171,8 @@ export function updateLineData(training) {
   );
 
   trainingLineData = [
-    ...unfilteredTrainingLineData,
     ...filteredTrainingLineData,
+    ...unfilteredTrainingLineData,
   ];
 
   return trainingLineData;
@@ -192,17 +205,6 @@ export function lineDataChange(value, trainingLineId, selectValueChange) {
   if (value === Number) parseInt(value);
 
   trainings[0][selectValueChange] = value;
-}
-
-export function addTrainingLine(trainingId) {
-  trainingLineData.push({
-    id: trainingLineData[trainingLineData.length - 1].id + 1,
-    trainingId: trainingId,
-    exerciseId: 0,
-    reps: 0,
-    restTime: 0,
-    note: '',
-  });
 }
 
 export function deleteEmptyLines() {

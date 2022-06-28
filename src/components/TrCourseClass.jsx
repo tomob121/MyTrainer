@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { getExercises, getExercise } from '../service/fakeExerciseService';
 import { getExerciseByTitle } from './../service/fakeExerciseService';
-import { lineDataChange } from './../service/fakeTrainingCourses';
 import {
   addTrainingLine,
-  changeTrainingExercise,
   deleteEmptyLines,
-  deleteTrainingLine,
   trainingLineData,
   updateLineData,
 } from '../service/fakeTrainingCourses';
@@ -39,8 +36,20 @@ class TrCourseClass extends Component {
     this.setState({ training: this.props.training });
     this.setState({ allExercises: getExercises() });
   }
+
+  componentWillUnmount() {
+    let { training } = this.state;
+    let filteredTrainingLine = training.trainingLines.filter(
+      (line) => line.exerciseId !== 0
+    );
+    training.trainingLines = filteredTrainingLine;
+    deleteEmptyLines();
+  }
+
   handleAddExercise() {
     let training = this.state.training;
+    console.log(training.trainingLines);
+    console.log(trainingLineData);
     training.trainingLines.push({
       id: trainingLineData[trainingLineData.length - 1].id + 1,
       trainingId: parseInt(this.props.id),
@@ -117,7 +126,10 @@ class TrCourseClass extends Component {
     training.trainingLines = filteredTrainingLine;
     deleteEmptyLines();
 
-    updateLineData(this.state.training);
+    if (!isEditing) {
+      console.log('true');
+      updateLineData(this.state.training);
+    }
 
     this.setState({ isEditing });
     this.setState({ training });
