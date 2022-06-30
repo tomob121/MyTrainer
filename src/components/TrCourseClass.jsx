@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { getExercises, getExercise } from '../service/fakeExerciseService';
+import RightSideBar from './RightSideBar';
 import { getExerciseByTitle } from './../service/fakeExerciseService';
 import {
   addTrainingLine,
@@ -48,8 +49,6 @@ class TrCourseClass extends Component {
 
   handleAddExercise() {
     let training = this.state.training;
-    console.log(training.trainingLines);
-    console.log(trainingLineData);
     training.trainingLines.push({
       id: trainingLineData[trainingLineData.length - 1].id + 1,
       trainingId: parseInt(this.props.id),
@@ -81,7 +80,6 @@ class TrCourseClass extends Component {
       newTrainingLines[newTrainingLines.length - 1].exercise.id;
     training.trainingLines = newTrainingLines;
     this.setState({ training });
-    // changeTrainingExercise(trainingLineId, e.target.value);
   }
 
   handleLineChange = (e, trainingLineId, selectedLineChange) => {
@@ -96,7 +94,6 @@ class TrCourseClass extends Component {
     }
 
     trainingLine[selectedLineChange] = value;
-    // lineDataChange(value, trainingLineId, selectedLineChange);
     this.setState({ trainingLines: trainingLine });
   };
 
@@ -105,7 +102,6 @@ class TrCourseClass extends Component {
     training.trainingLines = training.trainingLines.filter(
       (line) => line.id !== e.id
     );
-    // deleteTrainingLine(e.id);
 
     this.setState({ training });
   }
@@ -127,7 +123,6 @@ class TrCourseClass extends Component {
     deleteEmptyLines();
 
     if (!isEditing) {
-      console.log('true');
       updateLineData(this.state.training);
     }
 
@@ -151,7 +146,7 @@ class TrCourseClass extends Component {
   handleTitleChange(e) {
     let training = this.state.training;
     let targetValue = e.target.value;
-    this.state.training.title = targetValue;
+    training.title = targetValue;
 
     this.setState({ training });
   }
@@ -317,31 +312,13 @@ class TrCourseClass extends Component {
               </div>
             ))}
           </div>
-          <div className='col-3'>
-            <div>
-              <Button className='col-5 m-1' onClick={() => this.handleEdit()}>
-                {this.state.isEditing ? 'Save' : 'Edit'}
-              </Button>
-            </div>
-            <div className='col-auto'>
-              {this.state.isEditing ? (
-                <Button
-                  onClick={() => this.handleAddExercise()}
-                  style={{ color: 'white' }}
-                  className='btn btn-secondary m-1 col-5'
-                >
-                  Add Exercise
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => this.handleStart(training)}
-                  className='col-5 m-1 btn-success'
-                >
-                  Start
-                </Button>
-              )}
-            </div>
-          </div>
+          <RightSideBar
+            training={training}
+            handleEdit={() => this.handleEdit()}
+            handleAddExercise={() => this.handleAddExercise()}
+            handleStart={() => this.handleStart(training)}
+            isEditing={this.state.isEditing}
+          />
         </div>
       </Container>
     );

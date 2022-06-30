@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import { getTrainings } from '../service/fakeTrainingCourses';
 import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './TrainingCourses.css';

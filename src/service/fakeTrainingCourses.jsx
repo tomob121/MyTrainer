@@ -161,7 +161,6 @@ export function addTrainingLine(trainingId) {
 }
 
 export function updateLineData(training) {
-  console.log(training);
   let unfilteredTrainingLineData = training.trainingLines.filter(
     (line) => line.trainingId !== trainingLineData.trainingId
   );
