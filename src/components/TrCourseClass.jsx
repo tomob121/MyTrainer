@@ -3,6 +3,8 @@ import { Container, Button } from 'react-bootstrap';
 import { getExercises, getExercise } from '../service/fakeExerciseService';
 import RightSideBar from './RightSideBar';
 import { getExerciseByTitle } from './../service/fakeExerciseService';
+import RenderRestTime from './RenderRestTime';
+
 import {
   addTrainingLine,
   deleteEmptyLines,
@@ -281,34 +283,15 @@ class TrCourseClass extends Component {
                     {trainingLine.note ? 'Note: ' : ''} {trainingLine.note}
                   </div>
                 )}
-                <div className='row'>
-                  {isEditing ? (
-                    <div>
-                      Rest time:
-                      <input
-                        onFocus={this.handleFocus}
-                        className='col-1 m-1 '
-                        style={style.repNumberStyle}
-                        min={0}
-                        type={'number'}
-                        max={999}
-                        value={trainingLine.restTime}
-                        onChange={(e) =>
-                          this.handleLineChange(e, trainingLine.id, 'restTime')
-                        }
-                      />
-                    </div>
-                  ) : (
-                    <div className='row pt-1'>
-                      <div className='col-auto'>
-                        Rest Time: {trainingLine.restTime}
-                      </div>
-                      <div className='col-auto' style={style.toolTipMessage}>
-                        Seconds
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <RenderRestTime
+                  isEditing={isEditing}
+                  style={style}
+                  trainingLine={trainingLine}
+                  handleFocus={this.handleFocus}
+                  handleLineChange={(e) =>
+                    this.handleLineChange(e, trainingLine.id, 'restTime')
+                  }
+                />
               </div>
             ))}
           </div>
@@ -317,12 +300,14 @@ class TrCourseClass extends Component {
             handleEdit={() => this.handleEdit()}
             handleAddExercise={() => this.handleAddExercise()}
             handleStart={() => this.handleStart(training)}
-            isEditing={this.state.isEditing}
+            isEditing={isEditing}
           />
         </div>
       </Container>
     );
   }
 }
+
+
 
 export default TrCourseClass;

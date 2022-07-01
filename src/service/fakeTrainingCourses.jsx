@@ -166,7 +166,7 @@ export function updateLineData(training) {
   );
 
   let filteredTrainingLineData = trainingLineData.filter(
-    (line) => line.trainingId != training.id
+    (line) => line.trainingId !== training.id
   );
 
   trainingLineData = [
