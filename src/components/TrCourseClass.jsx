@@ -4,6 +4,7 @@ import { getExercises, getExercise } from '../service/fakeExerciseService';
 import RightSideBar from './RightSideBar';
 import { getExerciseByTitle } from './../service/fakeExerciseService';
 import RenderRestTime from './RenderRestTime';
+import RenderRepChangeAndDelete from './RenderRepChangeAndDelete';
 
 import {
   addTrainingLine,
@@ -222,60 +223,20 @@ class TrCourseClass extends Component {
                     {trainingLine.exercise.title} :{' '}
                   </div>
                 )}{' '}
-                <div className='col-auto row'>
-                  {isEditing ? (
-                    <div className='row'>
-                      <div className='col-auto'>
-                        <input
-                          onFocus={this.handleFocus}
-                          min={0}
-                          type={'number'}
-                          max={999}
-                          style={style.repNumberStyle}
-                          key={trainingLine.id}
-                          onChange={(e) =>
-                            this.handleLineChange(e, trainingLine.id, 'reps')
-                          }
-                          value={trainingLine.reps}
-                        />
-                        <Button
-                          onClick={(e) => this.handleDelete(trainingLine)}
-                          style={{ marginLeft: 30 }}
-                          className='btn-danger'
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                      <div className='col-2'>
-                        <input
-                          onFocus={this.handleFocus}
-                          maxLength='80'
-                          style={style.repNumberStyle}
-                          value={trainingLine.note}
-                          placeholder={'Enter note here'}
-                          onChange={(e) =>
-                            this.handleLineChange(e, trainingLine.id, 'note')
-                          }
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className='col-auto row'>
-                      <div className='col-auto' style={style.repNumberStyle}>
-                        {trainingLine.reps}
-                      </div>
-                    </div>
-                  )}
-                  {isEditing ? (
-                    ''
-                  ) : (
-                    <div className='col-auto pt-1' style={style.toolTipMessage}>
-                      {trainingLine.exercise.type.toLowerCase() === 'endure'
-                        ? 'Seconds'
-                        : 'Reps'}
-                    </div>
-                  )}
-                </div>
+                <RenderRepChangeAndDelete
+                  isEditing={isEditing}
+                  style={style}
+                  trainingLine={trainingLine}
+                  handleFocus={this.handleFocus}
+                  handleLineChange={(e) =>
+                    this.handleLineChange(e, trainingLine.id, 'reps')
+                  }
+                  handleLineChange2={(e) =>
+                    this.handleLineChange(e, trainingLine.id, 'note')
+                  }
+                  handleDelete={(e) => this.handleDelete(trainingLine)}
+                />
+                {/* {this.RenderRepChangeAndDelete(isEditing, style, trainingLine)} */}
                 {isEditing ? (
                   ''
                 ) : (
@@ -306,8 +267,65 @@ class TrCourseClass extends Component {
       </Container>
     );
   }
+
+  RenderRepChangeAndDelete(isEditing, style, trainingLine) {
+    return (
+      <div className='col-auto row'>
+        {isEditing ? (
+          <div className='row'>
+            <div className='col-auto'>
+              <input
+                onFocus={this.handleFocus}
+                min={0}
+                type={'number'}
+                max={999}
+                style={style.repNumberStyle}
+                key={trainingLine.id}
+                onChange={(e) =>
+                  this.handleLineChange(e, trainingLine.id, 'reps')
+                }
+                value={trainingLine.reps}
+              />
+              <Button
+                onClick={(e) => this.handleDelete(trainingLine)}
+                style={{ marginLeft: 30 }}
+                className='btn-danger'
+              >
+                Delete
+              </Button>
+            </div>
+            <div className='col-2'>
+              <input
+                onFocus={this.handleFocus}
+                maxLength='80'
+                style={style.repNumberStyle}
+                value={trainingLine.note}
+                placeholder={'Enter note here'}
+                onChange={(e) =>
+                  this.handleLineChange(e, trainingLine.id, 'note')
+                }
+              />
+            </div>
+          </div>
+        ) : (
+          <div className='col-auto row'>
+            <div className='col-auto' style={style.repNumberStyle}>
+              {trainingLine.reps}
+            </div>
+          </div>
+        )}
+        {isEditing ? (
+          ''
+        ) : (
+          <div className='col-auto pt-1' style={style.toolTipMessage}>
+            {trainingLine.exercise.type.toLowerCase() === 'endure'
+              ? 'Seconds'
+              : 'Reps'}
+          </div>
+        )}
+      </div>
+    );
+  }
 }
-
-
 
 export default TrCourseClass;
