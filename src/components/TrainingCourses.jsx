@@ -2,7 +2,6 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import './TrainingCourses.css';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 
