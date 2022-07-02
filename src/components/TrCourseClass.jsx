@@ -100,6 +100,10 @@ class TrCourseClass extends Component {
     this.setState({ trainingLines: trainingLine });
   };
 
+  funkkcija() {}
+  funkcija = () => {};
+  a = function () {};
+
   handleDelete(e) {
     let training = this.state.training;
     training.trainingLines = training.trainingLines.filter(
@@ -228,12 +232,7 @@ class TrCourseClass extends Component {
                   style={style}
                   trainingLine={trainingLine}
                   handleFocus={this.handleFocus}
-                  handleLineChange={(e) =>
-                    this.handleLineChange(e, trainingLine.id, 'reps')
-                  }
-                  handleLineChange2={(e) =>
-                    this.handleLineChange(e, trainingLine.id, 'note')
-                  }
+                  handleLineChange={this.handleLineChange}
                   handleDelete={(e) => this.handleDelete(trainingLine)}
                 />
                 {isEditing ? (

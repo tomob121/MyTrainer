@@ -7,7 +7,6 @@ const RenderRepChangeAndDelete = ({
   trainingLine,
   handleFocus,
   handleLineChange,
-  handleLineChange2,
   handleDelete,
 }) => {
   return (
@@ -40,7 +39,7 @@ const RenderRepChangeAndDelete = ({
               style={style.repNumberStyle}
               value={trainingLine.note}
               placeholder={'Enter note here'}
-              onChange={(e) => handleLineChange2(e, trainingLine.id, 'note')}
+              onChange={(e) => handleLineChange(e, trainingLine.id, 'note')}
             />
           </div>
         </div>

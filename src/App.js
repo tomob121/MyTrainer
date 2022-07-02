@@ -8,16 +8,19 @@ import ExerciseEndScreen from './components/ExerciseEndScreen';
 import { getTrainings } from './service/fakeTrainingCourses';
 import { useState } from 'react';
 import './App.css';
+import { getExercises } from './service/fakeExerciseService';
+import ExerciseDetails from './components/ExerciseDetails';
 
 function App() {
-
+  const [exercises] = useState(getExercises())
   const [trainings] = useState(getTrainings())
 
   return (
     <div >
       <NavBar />
       <Routes className="container">
-        <Route path='/home' element={<HomePage />} />
+        <Route path='/exercises/:id' element={<ExerciseDetails exercises={exercises} />} />
+        <Route path='/exercises' element={<HomePage />} />
         <Route path='/trainingCourses/:id/end' element={<ExerciseEndScreen trainingsProps={trainings} />} />
         <Route path='/trainingCourses/:id/start' element={<Exercise trainingsProps={trainings} />} />
         <Route path='/trainingCourses/:id' element={<TrCourse trainingsProps={trainings} />} />
