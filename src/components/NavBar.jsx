@@ -6,7 +6,7 @@ const NavBar = () => {
     <>
       <nav className='navbar navbar-expand-lg navbar-light bg-light'>
         <ul className='navbar-nav mr-auto'>
-          <NavLink className='nav-link nav=item' to='home'>
+          <NavLink className='nav-link nav=item' to='exercises'>
             All Exercises
           </NavLink>
           <NavLink className='nav-link nav=item' to='trainingCourses'>

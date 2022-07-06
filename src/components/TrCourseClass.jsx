@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Container, Button } from 'react-bootstrap';
-import { getExercises, getExercise } from '../service/fakeExerciseService';
+import { Container } from 'react-bootstrap';
+import {
+  getExercises,
+  getExercise,
+  getExerciseByTitle,
+} from '../service/fakeExerciseService';
 import RightSideBar from './RightSideBar';
-import { getExerciseByTitle } from './../service/fakeExerciseService';
 import RenderRestTime from './RenderRestTime';
 import RenderRepChangeAndDelete from './RenderRepChangeAndDelete';
 
@@ -207,7 +210,7 @@ class TrCourseClass extends Component {
                 className={isEditing ? 'm-3 row' : 'm-3 row'}
                 key={trainingLine.id}
               >
-                {isEditing ? (
+                {isEditing && (
                   <select
                     className='col-auto'
                     value={trainingLine.exercise.title}
@@ -217,16 +220,12 @@ class TrCourseClass extends Component {
                       <option key={exercise.id}>{exercise.title}</option>
                     ))}
                   </select>
-                ) : (
-                  ''
-                )}{' '}
-                {isEditing ? (
-                  ''
-                ) : (
+                )}
+                {isEditing === false && (
                   <div className='col-auto' style={style.exerciseTitleStyle}>
-                    {trainingLine.exercise.title} :{' '}
+                    {trainingLine.exercise.title}
                   </div>
-                )}{' '}
+                )}
                 <RenderRepChangeAndDelete
                   isEditing={isEditing}
                   style={style}
@@ -235,11 +234,9 @@ class TrCourseClass extends Component {
                   handleLineChange={this.handleLineChange}
                   handleDelete={(e) => this.handleDelete(trainingLine)}
                 />
-                {isEditing ? (
-                  ''
-                ) : (
+                {!isEditing && (
                   <div className='col pt-1'>
-                    {trainingLine.note ? 'Note: ' : ''} {trainingLine.note}
+                    {trainingLine.note && 'Note:'} {trainingLine.note}
                   </div>
                 )}
                 <RenderRestTime

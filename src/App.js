@@ -13,7 +13,30 @@ import ExerciseDetails from './components/ExerciseDetails';
 
 function App() {
   const [exercises] = useState(getExercises())
-  const [trainings] = useState(getTrainings())
+  const [trainings, setTrainings] = useState(getTrainings())
+
+
+  function handleDeleteTraining(trainingId) {
+    let filtered = trainings.filter(training => training.id !== trainingId)
+    setTrainings(filtered)
+  }
+
+  function handleAddTraining() {
+    let addedTrainings = trainings
+    addedTrainings.push({
+      id: makeId(),
+      title: 'Empty',
+      trainingLines: [],
+      duration: 0,
+      timer: [],
+    },)
+    setTrainings(addedTrainings)
+  }
+
+  function makeId() {
+    if (trainings.length === 0) return 1
+    return trainings[trainings.length - 1].id + 1
+  }
 
   return (
     <div >
@@ -24,7 +47,7 @@ function App() {
         <Route path='/trainingCourses/:id/end' element={<ExerciseEndScreen trainingsProps={trainings} />} />
         <Route path='/trainingCourses/:id/start' element={<Exercise trainingsProps={trainings} />} />
         <Route path='/trainingCourses/:id' element={<TrCourse trainingsProps={trainings} />} />
-        <Route path='/trainingCourses' element={<TrainingCourses trainingsProps={trainings} />} />
+        <Route path='/trainingCourses' element={<TrainingCourses trainingsProps={trainings} deleteTraining={handleDeleteTraining} addTraining={handleAddTraining} />} />
         <Route path='/' element={<HomePage />} />
       </Routes>
     </div>

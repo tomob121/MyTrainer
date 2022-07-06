@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { getExercises } from '../service/fakeExerciseService';
+import { Link } from 'react-router-dom';
 
 class HomePage extends Component {
   state = {
@@ -39,7 +40,9 @@ class HomePage extends Component {
         {exercises.map((exercise) => (
           <tbody key={exercise.id}>
             <tr>
-              <td>{exercise.title}</td>
+              <td>
+                <Link to={`/exercises/${exercise.id}`}>{exercise.title}</Link>
+              </td>
               <td>{exercise.bodyPart}</td>
               <td>{exercise.type}</td>
             </tr>

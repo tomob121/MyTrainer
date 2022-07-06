@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 
 const Exercise = ({ trainingsProps }) => {
   const { id } = useParams();
-  const [training, setTrainig] = trainingsProps.filter(
+  const [training] = trainingsProps.filter(
     (training) => training.id === parseInt(id)
   );
   const [exerciseStage, setExerciseStage] = useState(0);
@@ -34,7 +33,7 @@ const Exercise = ({ trainingsProps }) => {
   function handleTimer() {
     setTimeout(() => {
       training.timer[training.timer.length - 1] += 1;
-      setTimer((timer += 1));
+      setTimer((prev) => prev + 1);
     }, 1000);
   }
 
@@ -102,9 +101,7 @@ const Exercise = ({ trainingsProps }) => {
           </div>
         </div>
       </div>
-      {isRenderingRest ? (
-        ''
-      ) : (
+      {!isRenderingRest && (
         <div className='row'>
           <div className='col-4'></div>
           <div className='col-3'>

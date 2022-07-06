@@ -1,25 +1,38 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
-import { Card } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Container, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 
-const TrainingCourses = ({ trainingsProps }) => {
+const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
   const styles = {
     cardStyle: {
       width: '18rem',
       cursor: 'pointer',
       color: 'white',
-      maxHeight: 270,
     },
     cardTextStyle: {
       maxHeight: 200,
     },
   };
 
-  const trainings = trainingsProps;
+  const [trainings, setTrainings] = useState(trainingsProps);
   const navigate = useNavigate();
+  const [followUpdate, setFollowUpdate] = useState(0);
+
+  function handleDeleteTraining(trainingId) {
+    let filtered = trainings.filter((training) => training.id !== trainingId);
+    deleteTraining(trainingId);
+    setTrainings(filtered);
+  }
+
+  useEffect(() => setTrainings(trainingsProps), [followUpdate]);
+
+  function handleAddTraining() {
+    setFollowUpdate(followUpdate + 1);
+    console.log(trainings);
+    addTraining();
+  }
 
   function convertHMS(value) {
     const sec = parseInt(value, 10); // convert value to number if it's string
@@ -58,29 +71,49 @@ const TrainingCourses = ({ trainingsProps }) => {
 
   return (
     <Container>
-      {console.log()}
       {trainings.map((training) => (
         <Card
-          onClick={() => navigate(`/trainingCourses/${training.id}`)}
-          className='m-2 p-2 bg-primary'
+          className='p-2 m-2 bg-primary card'
           key={training.id}
           style={styles.cardStyle}
         >
-          <Card.Title>{training.title}</Card.Title>
-
-          <SimpleBar autoHide={false} style={styles.cardTextStyle}>
+          <Card.Title
+            onClick={() => navigate(`/trainingCourses/${training.id}`)}
+          >
+            {training.title}
+          </Card.Title>
+          <SimpleBar
+            onClick={() => navigate(`/trainingCourses/${training.id}`)}
+            autoHide={false}
+            style={styles.cardTextStyle}
+          >
             {training.trainingLines.map((trainingLine) => (
               <Card.Text key={trainingLine.id}>
                 {trainingLine.exercise.title}
               </Card.Text>
             ))}
           </SimpleBar>
-
-          <div style={{ textAlign: 'end' }}>
-            Avg. Duration: {handleAvrageTrainingDuration(training.id)}
+          <div className='row mt-2 '>
+            <div className='col'>
+              <Button
+                className='btn btn-danger '
+                onClick={() => handleDeleteTraining(training.id)}
+              >
+                Delete
+              </Button>
+            </div>
+            {training.trainingLines.length > 0 && (
+              <div className='col-7' style={{ textAlign: 'end' }}>
+                Avg. Duration: {handleAvrageTrainingDuration(training.id)}
+              </div>
+            )}
           </div>
         </Card>
       ))}
+
+      <div>
+        <Button onClick={() => handleAddTraining()}>add trainig</Button>
+      </div>
     </Container>
   );
 };

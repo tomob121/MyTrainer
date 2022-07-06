@@ -1,7 +1,7 @@
 import * as fakeExerciseService from './fakeExerciseService';
 import { getExerciseByTitle } from './fakeExerciseService';
 
-export const trainingData = [
+export let trainingData = [
   {
     id: 1,
     title: 'Core body workout',
@@ -158,6 +158,11 @@ export function addTrainingLine(trainingId) {
   });
 
   return trainingLineData;
+}
+
+export function deleteTraining(trainingId) {
+  let filtered = trainingData.filter((training) => training.id !== trainingId);
+  trainingData = filtered;
 }
 
 export function updateLineData(training) {
