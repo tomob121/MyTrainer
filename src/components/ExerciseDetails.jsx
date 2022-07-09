@@ -8,10 +8,17 @@ const ExerciseDetails = ({ exercises }) => {
     (exercise) => exercise.id === parseInt(id)
   )[0];
 
+  const styles = {
+    exerciseTitle: { textDecoration: 'underline', fontSize: 50 },
+  };
+
   return (
     <Container>
-      <h1 className='d-flex justify-content-center mt-5'>
-        This is exercise {exercise.title}
+      <h1
+        style={styles.exerciseTitle}
+        className='d-flex justify-content-center mt-5'
+      >
+        {exercise.title}
       </h1>
     </Container>
   );

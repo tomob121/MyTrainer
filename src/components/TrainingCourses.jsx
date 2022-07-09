@@ -3,6 +3,7 @@ import { Container, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
+import DialogConfirmation from './DialogConfirmation';
 
 const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
   const styles = {
@@ -19,18 +20,30 @@ const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
   const [trainings, setTrainings] = useState(trainingsProps);
   const navigate = useNavigate();
   const [followUpdate, setFollowUpdate] = useState(0);
+  const [dialog, setDialog] = useState({
+    message: '',
+    isLoading: false,
+  });
 
   function handleDeleteTraining(trainingId) {
+    let exactTrainig = trainings.filter((tr) => tr.id === trainingId)[0];
+    if (exactTrainig.trainingLines.length > 0) {
+      setDialog({
+        message: 'Are you sure you want to delete',
+        isLoading: true,
+      });
+      return;
+    }
+
     let filtered = trainings.filter((training) => training.id !== trainingId);
     deleteTraining(trainingId);
     setTrainings(filtered);
   }
 
-  useEffect(() => setTrainings(trainingsProps), [followUpdate]);
+  useEffect(() => setTrainings(trainingsProps), [trainingsProps, followUpdate]);
 
   function handleAddTraining() {
     setFollowUpdate(followUpdate + 1);
-    console.log(trainings);
     addTraining();
   }
 
@@ -71,49 +84,58 @@ const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
 
   return (
     <Container>
-      {trainings.map((training) => (
-        <Card
-          className='p-2 m-2 bg-primary card'
-          key={training.id}
-          style={styles.cardStyle}
-        >
-          <Card.Title
-            onClick={() => navigate(`/trainingCourses/${training.id}`)}
-          >
-            {training.title}
-          </Card.Title>
-          <SimpleBar
-            onClick={() => navigate(`/trainingCourses/${training.id}`)}
-            autoHide={false}
-            style={styles.cardTextStyle}
-          >
-            {training.trainingLines.map((trainingLine) => (
-              <Card.Text key={trainingLine.id}>
-                {trainingLine.exercise.title}
-              </Card.Text>
-            ))}
-          </SimpleBar>
-          <div className='row mt-2 '>
-            <div className='col'>
-              <Button
-                className='btn btn-danger '
-                onClick={() => handleDeleteTraining(training.id)}
+      <div className='row mt-3'>
+        <div className='col'>
+          {trainings.map((training) => (
+            <Card
+              className='p-2 m-2 bg-primary card'
+              key={training.id}
+              style={styles.cardStyle}
+            >
+              <Card.Title
+                onClick={() => navigate(`/trainingCourses/${training.id}`)}
               >
-                Delete
-              </Button>
-            </div>
-            {training.trainingLines.length > 0 && (
-              <div className='col-7' style={{ textAlign: 'end' }}>
-                Avg. Duration: {handleAvrageTrainingDuration(training.id)}
+                {training.title}
+              </Card.Title>
+              <SimpleBar
+                onClick={() => navigate(`/trainingCourses/${training.id}`)}
+                autoHide={false}
+                style={styles.cardTextStyle}
+              >
+                {training.trainingLines.map((trainingLine) => (
+                  <Card.Text key={trainingLine.id}>
+                    {trainingLine.exercise.title}
+                  </Card.Text>
+                ))}
+              </SimpleBar>
+              <div className='row mt-2 '>
+                <div className='col'>
+                  <Button
+                    className='btn btn-danger '
+                    onClick={() => handleDeleteTraining(training.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+                {training.trainingLines.length > 0 && (
+                  <div className='col-7' style={{ textAlign: 'end' }}>
+                    Avg. Duration: {handleAvrageTrainingDuration(training.id)}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </Card>
-      ))}
-
-      <div>
-        <Button onClick={() => handleAddTraining()}>add trainig</Button>
+            </Card>
+          ))}
+        </div>
+        <div className='col'>
+          <Button
+            className='btn btn-success'
+            onClick={() => handleAddTraining()}
+          >
+            Add Trainig
+          </Button>
+        </div>
       </div>
+      {dialog.isLoading && <DialogConfirmation message={dialog.message} />}
     </Container>
   );
 };
