@@ -10,6 +10,7 @@ const exercises = [
     title: 'Bench Press',
     bodyPart: 'Arms',
     type: 'Push',
+    img: 'images/bench.jpg',
   },
   {
     id: 2,

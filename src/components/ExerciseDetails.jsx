@@ -14,6 +14,7 @@ const ExerciseDetails = ({ exercises }) => {
 
   return (
     <Container>
+      <img src='' alt='' />
       <h1
         style={styles.exerciseTitle}
         className='d-flex justify-content-center mt-5'

@@ -1,6 +1,10 @@
 import React from 'react';
 
-const DialogConfirmation = ({ message }) => {
+const DialogConfirmation = ({
+  message,
+  usingCancelDelete,
+  usingDeleteTrainign,
+}) => {
   return (
     <div
       style={{
@@ -29,6 +33,7 @@ const DialogConfirmation = ({ message }) => {
         <h3 style={{ color: '#111' }}>{message}</h3>
         <div style={{ display: 'flex', alighnItems: 'center' }}>
           <button
+            onClick={() => usingDeleteTrainign()}
             style={{
               background: 'red',
               color: 'white',
@@ -42,6 +47,7 @@ const DialogConfirmation = ({ message }) => {
             Yes
           </button>
           <button
+            onClick={() => usingCancelDelete()}
             style={{
               background: 'green',
               color: 'white',

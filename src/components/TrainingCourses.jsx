@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
@@ -24,21 +24,34 @@ const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
     message: '',
     isLoading: false,
   });
+  const currentId = useRef();
 
-  function handleDeleteTraining(trainingId) {
-    let exactTrainig = trainings.filter((tr) => tr.id === trainingId)[0];
-    if (exactTrainig.trainingLines.length > 0) {
-      setDialog({
-        message: 'Are you sure you want to delete',
-        isLoading: true,
-      });
-      return;
-    }
-
-    let filtered = trainings.filter((training) => training.id !== trainingId);
-    deleteTraining(trainingId);
+  function handleDeleteTraining(trainingId, stringValue) {
+    let confirmation = stringValue;
+    currentId.current = trainingId;
+    let exactTrainig = trainings.filter((tr) => tr.id === currentId.current)[0];
+    if (confirmation !== 'yes')
+      if (exactTrainig.trainingLines.length > 0) {
+        setDialog({
+          message: 'Are you sure you want to delete',
+          isLoading: true,
+        });
+        return;
+      }
+    setDialog({
+      message: '',
+      isLoading: false,
+    });
+    let filtered = trainings.filter(
+      (training) => training.id !== currentId.current
+    );
+    deleteTraining(currentId.current);
     setTrainings(filtered);
   }
+
+  const handleCancleDelete = () => {
+    setDialog({ message: '', isLoading: false });
+  };
 
   useEffect(() => setTrainings(trainingsProps), [trainingsProps, followUpdate]);
 
@@ -135,7 +148,15 @@ const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
           </Button>
         </div>
       </div>
-      {dialog.isLoading && <DialogConfirmation message={dialog.message} />}
+      {dialog.isLoading && (
+        <DialogConfirmation
+          usingDeleteTrainign={() =>
+            handleDeleteTraining(currentId.current, 'yes')
+          }
+          usingCancelDelete={handleCancleDelete}
+          message={dialog.message}
+        />
+      )}
     </Container>
   );
 };
