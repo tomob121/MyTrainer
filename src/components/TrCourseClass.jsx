@@ -15,13 +15,13 @@ import {
   trainingLineData,
   updateLineData,
 } from '../service/fakeTrainingCourses';
+import axios from 'axios';
 
 class TrCourseClass extends Component {
   state = {
     training: {
-      id: 0,
+      _id: 0,
       title: '',
-      trainingLines: [],
       duration: 0,
       timer: [],
     },
@@ -35,21 +35,28 @@ class TrCourseClass extends Component {
     ],
     counter: 0,
     isEditing: false,
+    trainingLines: [],
   };
 
   handleFocus = (e) => e.target.select();
 
-  componentDidMount() {
+  async componentDidMount() {
+    let trainingLine = await axios.get(
+      `http://localhost:3000/api/trainingLine/${this.state.training._id}`
+    );
+    let allExercises = await axios.get(`http://localhost:3000/api/exercise`);
     this.setState({ training: this.props.training });
-    this.setState({ allExercises: getExercises() });
+    this.setState({ allExercises });
+    this.setState({ trainingLines: trainingLine.data });
+    
   }
 
   componentWillUnmount() {
-    let { training } = this.state;
-    let filteredTrainingLine = training.trainingLines.filter(
+    let { trainingLines } = this.state;
+    let filteredTrainingLine = trainingLines.filter(
       (line) => line.exerciseId !== 0
     );
-    training.trainingLines = filteredTrainingLine;
+    trainingLines = filteredTrainingLine;
     deleteEmptyLines();
   }
 
@@ -108,12 +115,10 @@ class TrCourseClass extends Component {
   a = function () {};
 
   handleDelete(e) {
-    let training = this.state.training;
-    training.trainingLines = training.trainingLines.filter(
-      (line) => line.id !== e.id
-    );
+    let trainingLines = this.state.trainingLines;
+    trainingLines = trainingLines.filter((line) => line.id !== e.id);
 
-    this.setState({ training });
+    this.setState({ trainingLines });
   }
 
   handleAddTimer() {}
@@ -190,6 +195,7 @@ class TrCourseClass extends Component {
 
     return (
       <Container>
+      {  console.log(this.state.training)}
         <div className='row pt-3'>
           <div className='col'>
             {isEditing ? (
@@ -205,19 +211,19 @@ class TrCourseClass extends Component {
               <h1 className='pb-5'>{training.title}</h1>
             )}
 
-            {training.trainingLines.map((trainingLine) => (
+            {this.state.trainingLines.map((trainingLine) => (
               <div
                 className={isEditing ? 'm-3 row' : 'm-3 row'}
-                key={trainingLine.id}
+                key={trainingLine._id}
               >
                 {isEditing && (
                   <select
                     className='col-auto'
-                    value={trainingLine.exercise.title}
+                    value={trainingLine.exerciseId.title}
                     onChange={(e) => this.handleSelect(e, trainingLine.id)}
                   >
                     {allExercises.map((exercise) => (
-                      <option key={exercise.id}>{exercise.title}</option>
+                      <option key={exercise._id}>{exercise.title}</option>
                     ))}
                   </select>
                 )}

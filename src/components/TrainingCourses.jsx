@@ -5,7 +5,12 @@ import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import DialogConfirmation from './DialogConfirmation';
 
-const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
+const TrainingCourses = ({
+  trainingsProps,
+  deleteTraining,
+  addTraining,
+  trainingLines,
+}) => {
   const styles = {
     cardStyle: {
       width: '18rem',
@@ -18,6 +23,7 @@ const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
   };
 
   const [trainings, setTrainings] = useState(trainingsProps);
+  const [trainingLines2, setTrainingLines] = useState(trainingLines);
   const navigate = useNavigate();
   const [followUpdate, setFollowUpdate] = useState(0);
   const [dialog, setDialog] = useState({
@@ -25,6 +31,8 @@ const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
     isLoading: false,
   });
   const currentId = useRef();
+  // console.log(trainings);
+  // console.log(trainingLines2);
 
   function handleDeleteTraining(trainingId, stringValue) {
     let confirmation = stringValue;
@@ -102,22 +110,24 @@ const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
           {trainings.map((training) => (
             <Card
               className='p-2 m-2 bg-primary card'
-              key={training.id}
+              key={training._id}
               style={styles.cardStyle}
             >
               <Card.Title
-                onClick={() => navigate(`/trainingCourses/${training.id}`)}
+                onClick={() => navigate(`/trainingCourses/${training._id}`)}
               >
                 {training.title}
               </Card.Title>
               <SimpleBar
-                onClick={() => navigate(`/trainingCourses/${training.id}`)}
+                onClick={() => navigate(`/trainingCourses/${training._id}`)}
                 autoHide={false}
                 style={styles.cardTextStyle}
               >
-                {training.trainingLines.map((trainingLine) => (
-                  <Card.Text key={trainingLine.id}>
-                    {trainingLine.exercise.title}
+                {trainingLines2.map((trainingLine) => (
+                  <Card.Text key={trainingLine._id}>
+                    {trainingLine.trainingId._id === training._id
+                      ? trainingLine.exerciseId.title
+                      : null}
                   </Card.Text>
                 ))}
               </SimpleBar>
@@ -125,12 +135,12 @@ const TrainingCourses = ({ trainingsProps, deleteTraining, addTraining }) => {
                 <div className='col'>
                   <Button
                     className='btn btn-danger '
-                    onClick={() => handleDeleteTraining(training.id)}
+                    onClick={() => handleDeleteTraining(training._id)}
                   >
                     Delete
                   </Button>
                 </div>
-                {training.trainingLines.length > 0 && (
+                {trainingLines.length > 0 && (
                   <div className='col-7' style={{ textAlign: 'end' }}>
                     Avg. Duration: {handleAvrageTrainingDuration(training.id)}
                   </div>

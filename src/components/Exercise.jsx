@@ -4,9 +4,7 @@ import { Container, Button } from 'react-bootstrap';
 
 const Exercise = ({ trainingsProps }) => {
   const { id } = useParams();
-  const [training] = trainingsProps.filter(
-    (training) => training.id === parseInt(id)
-  );
+  const [training] = trainingsProps.filter((training) => training._id == id);
   const [exerciseStage, setExerciseStage] = useState(0);
   const [isRenderingRest, setIsRenderingRest] = useState(false);
   let [countDown, setContDown] = useState(

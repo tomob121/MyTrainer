@@ -6,14 +6,39 @@ import Exercise from './components/Exercise';
 import NavBar from './components/NavBar';
 import ExerciseEndScreen from './components/ExerciseEndScreen';
 import { getTrainings } from './service/fakeTrainingCourses';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { getExercises } from './service/fakeExerciseService';
 import ExerciseDetails from './components/ExerciseDetails';
+import axios from 'axios';
 
 function App() {
-  const [exercises] = useState(getExercises())
-  const [trainings, setTrainings] = useState(getTrainings())
+
+  const [exercises, setExerciseData] = useState()
+  const [trainings, setTrainingData] = useState()
+  const [trainingLines, setTrainingLines] = useState()
+  const [exercises2] = useState(getExercises())
+  const [trainings2, setTrainings] = useState(getTrainings())
+
+  useEffect(() => {
+    try {
+      const fetcheData = async () => {
+        const { data: exercise } = await axios.get('http://localhost:3000/api/exercise')
+        setExerciseData(exercise)
+
+        const { data: trainingLines } = await axios.get('http://localhost:3000/api/trainingLine')
+        setTrainingLines(trainingLines)
+
+        const { data: training } = await axios.get('http://localhost:3000/api/training')
+        setTrainingData(training)
+      }
+      fetcheData()
+    } catch (ex) {
+
+    }
+
+  }, [])
+  console.log(trainingLines)
 
 
   function handleDeleteTraining(trainingId) {
@@ -47,7 +72,11 @@ function App() {
         <Route path='/trainingCourses/:id/end' element={<ExerciseEndScreen trainingsProps={trainings} />} />
         <Route path='/trainingCourses/:id/start' element={<Exercise trainingsProps={trainings} />} />
         <Route path='/trainingCourses/:id' element={<TrCourse trainingsProps={trainings} />} />
-        <Route path='/trainingCourses' element={<TrainingCourses trainingsProps={trainings} deleteTraining={handleDeleteTraining} addTraining={handleAddTraining} />} />
+        <Route path='/trainingCourses' element={<TrainingCourses
+          trainingsProps={trainings}
+          deleteTraining={handleDeleteTraining}
+          addTraining={handleAddTraining}
+          trainingLines={trainingLines} />} />
         <Route path='/' element={<HomePage />} />
       </Routes>
     </div>

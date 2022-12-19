@@ -4,9 +4,8 @@ import { useParams } from 'react-router-dom';
 
 const ExerciseDetails = ({ exercises }) => {
   const { id } = useParams();
-  const exercise = exercises.filter(
-    (exercise) => exercise.id === parseInt(id)
-  )[0];
+  const exercise = exercises.filter((exercise) => exercise._id == id)[0];
+  console.log(exercise);
 
   const styles = {
     exerciseTitle: { textDecoration: 'underline', fontSize: 50 },

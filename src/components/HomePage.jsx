@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Table } from 'react-bootstrap';
-import { getExercises } from '../service/fakeExerciseService';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 class HomePage extends Component {
   state = {
@@ -9,8 +9,8 @@ class HomePage extends Component {
     searchValue: '',
   };
 
-  componentDidMount() {
-    const exercises = [...getExercises()];
+  async componentDidMount() {
+    const { data: exercises } = await axios.get('http://localhost:3000/api/exercise');
 
     this.setState({ exercises });
   }
@@ -38,10 +38,10 @@ class HomePage extends Component {
           </tr>
         </thead>
         {exercises.map((exercise) => (
-          <tbody key={exercise.id}>
+          <tbody key={exercise._id}>
             <tr>
               <td>
-                <Link to={`/exercises/${exercise.id}`}>{exercise.title}</Link>
+                <Link to={`/exercises/${exercise._id}`}>{exercise.title}</Link>
               </td>
               <td>{exercise.bodyPart}</td>
               <td>{exercise.type}</td>
