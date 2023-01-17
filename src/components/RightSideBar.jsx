@@ -8,7 +8,10 @@ const RightSideBar = (props) => {
   return (
     <div className='col-3'>
       <div>
-        <Button className='col-5 m-1' onClick={() => handleEdit()}>
+        <Button
+          className='col-5 m-1'
+          onClick={() => handleEdit()}
+        >
           {isEditing ? 'Save' : 'Edit'}
         </Button>
       </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { getExercises } from '../service/exerciseService';
 
 class HomePage extends Component {
   state = {
@@ -10,9 +10,9 @@ class HomePage extends Component {
   };
 
   async componentDidMount() {
-    const { data: exercises } = await axios.get('http://localhost:3000/api/exercise');
-
+    const { data: exercises } = await getExercises();
     this.setState({ exercises });
+    localStorage.setItem('exercises', JSON.stringify(exercises));
   }
 
   handleChange = (e) => {

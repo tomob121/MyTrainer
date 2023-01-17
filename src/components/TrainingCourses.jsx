@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import DialogConfirmation from './DialogConfirmation';
+import { getTrainingLines } from './../service/trainingLineService';
 
 const TrainingCourses = ({
   trainingsProps,
   deleteTraining,
   addTraining,
-  trainingLines,
+  trainingLinesProps,
 }) => {
   const styles = {
     cardStyle: {
@@ -22,24 +23,32 @@ const TrainingCourses = ({
     },
   };
 
-  const [trainings, setTrainings] = useState(trainingsProps);
-  const [trainingLines2, setTrainingLines] = useState(trainingLines);
   const navigate = useNavigate();
+  const [trainings, setTrainings] = useState([]);
+  const [trainingLines, setTrainingLines] = useState([]);
   const [followUpdate, setFollowUpdate] = useState(0);
   const [dialog, setDialog] = useState({
     message: '',
     isLoading: false,
   });
   const currentId = useRef();
-  // console.log(trainings);
-  // console.log(trainingLines2);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await getTrainingLines();
+      setTrainingLines(data);
+    };
+    fetchData();
+    setTrainings(trainingsProps);
+  }, [trainingsProps, followUpdate]);
 
   function handleDeleteTraining(trainingId, stringValue) {
-    let confirmation = stringValue;
+    let trainingLinesFiltered = trainingLines.filter(
+      (trl) => trl.trainingId._id === trainingId
+    );
     currentId.current = trainingId;
-    let exactTrainig = trainings.filter((tr) => tr.id === currentId.current)[0];
-    if (confirmation !== 'yes')
-      if (exactTrainig.trainingLines.length > 0) {
+    if (stringValue !== 'yes')
+      if (trainingLinesFiltered.length > 0) {
         setDialog({
           message: 'Are you sure you want to delete',
           isLoading: true,
@@ -50,22 +59,17 @@ const TrainingCourses = ({
       message: '',
       isLoading: false,
     });
-    let filtered = trainings.filter(
-      (training) => training.id !== currentId.current
-    );
-    deleteTraining(currentId.current);
-    setTrainings(filtered);
+
+    deleteTraining(trainingId);
   }
 
   const handleCancleDelete = () => {
     setDialog({ message: '', isLoading: false });
   };
 
-  useEffect(() => setTrainings(trainingsProps), [trainingsProps, followUpdate]);
-
   function handleAddTraining() {
-    setFollowUpdate(followUpdate + 1);
     addTraining();
+    setFollowUpdate(followUpdate + 1);
   }
 
   function convertHMS(value) {
@@ -102,6 +106,9 @@ const TrainingCourses = ({
 
     return convertHMS(sum);
   }
+  if (trainingLines >= 0) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <Container>
@@ -123,7 +130,7 @@ const TrainingCourses = ({
                 autoHide={false}
                 style={styles.cardTextStyle}
               >
-                {trainingLines2.map((trainingLine) => (
+                {trainingLines.map((trainingLine) => (
                   <Card.Text key={trainingLine._id}>
                     {trainingLine.trainingId._id === training._id
                       ? trainingLine.exerciseId.title
@@ -140,7 +147,7 @@ const TrainingCourses = ({
                     Delete
                   </Button>
                 </div>
-                {trainingLines.length > 0 && (
+                {trainingLinesProps.length > 0 && (
                   <div className='col-7' style={{ textAlign: 'end' }}>
                     Avg. Duration: {handleAvrageTrainingDuration(training.id)}
                   </div>

@@ -20,8 +20,8 @@ const RenderRepChangeAndDelete = ({
               type={'number'}
               max={999}
               style={style.repNumberStyle}
-              key={trainingLine.id}
-              onChange={(e) => handleLineChange(e, trainingLine.id, 'reps')}
+              key={trainingLine._id}
+              onChange={(e) => handleLineChange(e, trainingLine._id, 'reps')}
               value={trainingLine.reps}
             />
             <Button
@@ -39,7 +39,7 @@ const RenderRepChangeAndDelete = ({
               style={style.repNumberStyle}
               value={trainingLine.note}
               placeholder={'Enter note here'}
-              onChange={(e) => handleLineChange(e, trainingLine.id, 'note')}
+              onChange={(e) => handleLineChange(e, trainingLine._id, 'note')}
             />
           </div>
         </div>
@@ -54,7 +54,8 @@ const RenderRepChangeAndDelete = ({
         ''
       ) : (
         <div className='col-auto pt-1' style={style.toolTipMessage}>
-          {trainingLine.exercise.type.toLowerCase() === 'endure'
+          {trainingLine.exerciseId.type &&
+          trainingLine.exerciseId.type.toLowerCase() === 'endure'
             ? 'Seconds'
             : 'Reps'}
         </div>

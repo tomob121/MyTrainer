@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import { getExercise } from '../service/exerciseService';
 
-const ExerciseDetails = ({ exercises }) => {
+function ExerciseDetails() {
   const { id } = useParams();
-  const exercise = exercises.filter((exercise) => exercise._id == id)[0];
-  console.log(exercise);
+  const [exercise, setExercise] = useState({});
+
+  useEffect(() => {
+    const fetchExercise = async () => {
+      const { data: exercise } = await getExercise(id);
+      setExercise(exercise);
+    };
+    fetchExercise();
+  }, [id]);
 
   const styles = {
     exerciseTitle: { textDecoration: 'underline', fontSize: 50 },
@@ -13,7 +21,7 @@ const ExerciseDetails = ({ exercises }) => {
 
   return (
     <Container>
-      <img src='' alt='' />
+      {<img src='' alt='' />}
       <h1
         style={styles.exerciseTitle}
         className='d-flex justify-content-center mt-5'
@@ -22,6 +30,6 @@ const ExerciseDetails = ({ exercises }) => {
       </h1>
     </Container>
   );
-};
+}
 
 export default ExerciseDetails;
