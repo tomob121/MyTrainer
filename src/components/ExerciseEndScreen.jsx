@@ -1,24 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
+import { getTrainingLine } from '../service/trainingLineService';
+import { getTraining } from '../service/trainingService';
+import { getTrainings } from './../service/trainingService';
 
-const ExerciseEndScreen = ({ trainingsProps }) => {
+const ExerciseEndScreen = () => {
   const { id } = useParams();
-  const [training] = trainingsProps.filter(
-    (training) => training.id === parseInt(id)
-  );
+  const [trainingLine, setTrainingLine] = useState([]);
+  const [training, setTraining] = useState({});
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: trainingLine } = await getTrainingLine(id);
+      setTrainingLine(trainingLine);
+      const { data: training } = await getTrainings();
+      setTraining(training.filter((training) => training._id === id)[0]);
+    };
+    fetchData();
+  }, []);
+  console.log(training);
   return (
     <Container>
       <div>
         <h1>End of {training.title}</h1>
-        {training.trainingLines.map((line) => (
-          <li className='m-3' key={line.id}>
-            {line.exercise.title}
+        {trainingLine.map((line) => (
+          <li className='m-3' key={line._id}>
+            {line.exerciseId.title}
           </li>
         ))}
       </div>
-      Duration: {training.timer[training.timer.length - 1]}
     </Container>
   );
 };

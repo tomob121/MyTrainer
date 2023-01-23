@@ -173,10 +173,6 @@ class TrCourse extends Component {
   render() {
     const { training, isEditing, allExercises, trainingLines } = this.state;
 
-    if (trainingLines >= 0) {
-      return <h1>Loading...</h1>;
-    }
-
     const style = {
       exerciseTitleStyle: {
         color: 'Black',

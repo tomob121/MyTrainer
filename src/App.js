@@ -13,7 +13,7 @@ import { getTrainingLines } from './service/trainingLineService';
 const TrainingCourses = lazy(() => import('./components/TrainingCourses'))
 
 function App() {
-
+  document.title = 'MyTrainer'
   const [trainings, setTrainingData] = useState()
   const [trainingLines, setTrainingLines] = useState()
   const [followUpdates, setFollowUpdates] = useState(0)

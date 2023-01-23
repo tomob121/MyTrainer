@@ -22,8 +22,8 @@ const TrainingCourses = ({
       maxHeight: 200,
     },
   };
-
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [trainings, setTrainings] = useState([]);
   const [trainingLines, setTrainingLines] = useState([]);
   const [followUpdate, setFollowUpdate] = useState(0);
@@ -37,6 +37,7 @@ const TrainingCourses = ({
     const fetchData = async () => {
       const { data } = await getTrainingLines();
       setTrainingLines(data);
+      setIsLoading(false);
     };
     fetchData();
     setTrainings(trainingsProps);
@@ -106,7 +107,7 @@ const TrainingCourses = ({
 
     return convertHMS(sum);
   }
-  if (trainingLines >= 0) {
+  if (isLoading) {
     return <h1>Loading...</h1>;
   }
 
