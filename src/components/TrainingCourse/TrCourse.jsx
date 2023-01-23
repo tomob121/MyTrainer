@@ -3,13 +3,13 @@ import { Container } from 'react-bootstrap';
 import RightSideBar from './RightSideBar';
 import RenderRestTime from './RenderRestTime';
 import RenderRepChangeAndDelete from './RenderRepChangeAndDelete';
-import { getExercises } from '../service/exerciseService';
+import { getExercises } from '../../service/exerciseService';
 import {
   deleteTrainingLine,
   postTrainingLine,
   getTrainingLine,
   postTrainingLineAll,
-} from '../service/trainingLineService';
+} from '../../service/trainingLineService';
 
 class TrCourse extends Component {
   state = {

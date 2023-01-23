@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
-function CountDown({ time, nextExercise }) {
+function CountDown({ time, afterCountDown }) {
   const [countDown, setCountDown] = useState(time);
-  if (countDown === 0) setTimeout(() => nextExercise(), 1000);
+  
+  if(afterCountDown)
+  if (countDown === 0) setTimeout(() => afterCountDown(), 1000);
 
   setTimeout(() => setCountDown(countDown - 1), 1000);  
   return <div>{countDown}</div>;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getTrainingLine } from '../service/trainingLineService';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
-import CountDown from './CountDown';
+import CountDown from '../utility/CountDown';
 
 function Exercise() {
   const { id } = useParams();
@@ -10,7 +10,6 @@ function Exercise() {
   const [trainingLines, setTrainingLines] = useState({});
   const [exerciseStage, setExerciseStage] = useState(0);
   const [isRenderingRest, setIsRenderingRest] = useState(false);
-  const [countDown, setCountDown] = useState(0);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +17,6 @@ function Exercise() {
       const { data } = await getTrainingLine(id);
       setTrainingLines(data);
       setIsLoading(false);
-      setCountDown(data[exerciseStage].restTime);
     };
     fetchData();
     return () => {
@@ -26,20 +24,11 @@ function Exercise() {
     };
   }, []);
 
-  useEffect(() => {
-    if (isRenderingRest) {
-      setTimeout(() => {
-        setCountDown((prev) => prev - 1);
-      }, 1000);
-    }
-  }, [countDown, exerciseStage]);
-
   function nextExercise() {
     if (exerciseStage === trainingLines.length - 1)
       navigate(`/trainingCourses/${id}/end`);
     setExerciseStage(exerciseStage + 1);
     setIsRenderingRest(!isRenderingRest);
-    reduceTimer();
   }
 
   function nextExerciseSkipRest() {
@@ -47,10 +36,6 @@ function Exercise() {
       navigate(`/trainingCourses/${id}/end`);
     setExerciseStage(exerciseStage + 1);
     setIsRenderingRest(false);
-  }
-
-  function reduceTimer() {
-    setTimeout(() => setCountDown(countDown - 1), 1000);
   }
 
   const styles = {
@@ -76,7 +61,10 @@ function Exercise() {
           <div className='row col-3 mt-5'>
             <div className='col-auto'>Rest</div>
             <div className='col-auto'>
-              <CountDown time={trainingLines[exerciseStage].restTime} nextExercise={() => nextExercise()} />
+              <CountDown
+                time={trainingLines[exerciseStage].restTime}
+                afterCountDown={() => nextExercise()}
+              />
             </div>
           </div>
         ) : (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import TrCourse from './TrCourse';
+import TrCourse from './TrainingCourse/TrCourse';
 
 const TrCourseHOP = ({ trainingsProps, followUpdates }) => {
   const { id } = useParams();
