@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { getExercises } from '../service/exerciseService';
+import { getExercises } from '../service/exerciseService.tsx';
 
 class HomePage extends Component {
   state = {
-    exercises: [],
+    exercises: [{
+      title: '',
+      bodyPart: '',
+      type: ''
+    }],
     searchValue: '',
   };
 
@@ -15,11 +19,11 @@ class HomePage extends Component {
     localStorage.setItem('exercises', JSON.stringify(exercises));
   }
 
-  handleChange = (e) => {
+  handleChange = (e: any) => {
     this.setState({ searchValue: e.currentTarget.value });
   };
 
-  renderTable(exercises) {
+  renderTable(exercises: any) {
     const myStyle = {
       borderLeft: 'solid',
       borderRight: 'solid',
@@ -37,7 +41,7 @@ class HomePage extends Component {
             <th>Type</th>
           </tr>
         </thead>
-        {exercises.map((exercise) => (
+        {exercises.map((exercise: any) => (
           <tbody key={exercise._id}>
             <tr>
               <td>
@@ -54,7 +58,7 @@ class HomePage extends Component {
 
   render() {
     const handleSearch = () => {
-      let searchedItem = [];
+      let searchedItem: object[] = [];
       for (const iterator of this.state.exercises) {
         if (
           iterator.title
@@ -79,7 +83,7 @@ class HomePage extends Component {
             value={this.state.searchValue}
             onChange={this.handleChange}
             type='text'
-            placeholder='Title'
+            placeholder='Name'
           />
 
           <div className='col-8'>{this.renderTable(searchedExercises)}</div>

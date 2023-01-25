@@ -1,22 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import TrCourse from './components/withTrCourse';
-import Exercise from './components/Exercise';
-import NavBar from './components/NavBar';
-import ExerciseEndScreen from './components/ExerciseEndScreen';
+import HomePage from './components/HomePage.tsx';
+import TrCourse from './components/withTrCourse.jsx';
+import Exercise from './components/Exercise.jsx';
+import NavBar from './components/NavBar.jsx';
+import ExerciseEndScreen from './components/ExerciseEndScreen.jsx';
 import { useState, useEffect, Suspense, lazy } from 'react';
 import './App.css';
-import ExerciseDetails from './components/ExerciseDetails';
-import { getTrainings, postTraining, deleteTraining } from './service/trainingService';
-import { getTrainingLines } from './service/trainingLineService';
+import ExerciseDetails from './components/ExerciseDetails.jsx';
+import { getTrainings, postTraining, deleteTraining } from './service/trainingService.tsx';
+import { getTrainingLines } from './service/trainingLineService.tsx';
 
-const TrainingCourses = lazy(() => import('./components/TrainingCourses'))
+const TrainingCourses = lazy(() => import('./components/TrainingCourses.jsx'))
 
 function App() {
   document.title = 'MyTrainer'
-  const [trainings, setTrainingData] = useState()
+  const [trainings, setTrainingData] = useState([{_id: 0}])
   const [trainingLines, setTrainingLines] = useState()
   const [followUpdates, setFollowUpdates] = useState(0)
+  const [number, setNumber] = useState(1)
 
 
   useEffect(() => {
@@ -36,7 +37,7 @@ function App() {
 
 
 
-  async function handleDeleteTraining(trainingId) {
+  async function handleDeleteTraining(trainingId: number) {
     let filtered = trainings.filter(training => training._id !== trainingId)
     setTrainingData(filtered)
     await deleteTraining(trainingId)
@@ -44,10 +45,11 @@ function App() {
 
   async function handleAddTraining() {
     const training = {
-      title: 'Empty',
+      title: `MyTraining ${number}`,
       duration: 0,
       timer: [],
     }
+    setNumber(number + 1)
     const { data } = await postTraining(training)
     const addedTrainings = [data, ...trainings]
     setTrainingData(addedTrainings)
@@ -58,7 +60,7 @@ function App() {
   return (
     <div >
       <NavBar />
-      <Routes className="container">
+      <Routes>
         <Route path='/exercises/:id' element={<ExerciseDetails />} />
         <Route path='/exercises' element={<HomePage />} />
         <Route path='/trainingCourses/:id/end' element={<ExerciseEndScreen trainingsProps={trainings} />} />

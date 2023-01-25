@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import { getTrainingLine } from '../service/trainingLineService';
-import { getTraining } from '../service/trainingService';
-import { getTrainings } from './../service/trainingService';
+import { getTrainingLine } from '../service/trainingLineService.tsx';
+import { getTraining } from '../service/trainingService.tsx';
+import { getTrainings } from '../service/trainingService.tsx';
 
 const ExerciseEndScreen = () => {
   const { id } = useParams();

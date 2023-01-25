@@ -3,8 +3,8 @@ import { Container, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
-import DialogConfirmation from './DialogConfirmation';
-import { getTrainingLines } from './../service/trainingLineService';
+import DialogConfirmation from './DialogConfirmation.tsx';
+import { getTrainingLines } from '../service/trainingLineService.tsx';
 
 const TrainingCourses = ({
   trainingsProps,

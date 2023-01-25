@@ -1,18 +1,82 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
-import RightSideBar from './RightSideBar';
-import RenderRestTime from './RenderRestTime';
-import RenderRepChangeAndDelete from './RenderRepChangeAndDelete';
-import { getExercises } from '../../service/exerciseService';
+import RightSideBar from './RightSideBar.jsx';
+import RenderRestTime from './RenderRestTime.jsx';
+import RenderRepChangeAndDelete from './RenderRepChangeAndDelete.jsx';
+import { getExercises } from '../../service/exerciseService.tsx';
 import {
   deleteTrainingLine,
   postTrainingLine,
   getTrainingLine,
   postTrainingLineAll,
-} from '../../service/trainingLineService';
+} from '../../service/trainingLineService.tsx';
 
-class TrCourse extends Component {
-  state = {
+type MyProps ={
+  training: any,
+  id: number,
+  navigate: any
+}
+
+
+type MyState ={
+  training: {
+    _id: number,
+    title: string,
+    duration: number,
+    timer: any[]
+  }
+  allExercises: [
+    {
+      _id: number,
+      title: string,
+      bodyPart: string,
+      type: string
+    }
+  ],
+  counter: number,
+  isEditing: boolean,
+  trainingLines: [
+    {
+      _id: number,
+      trainingId: {  
+        _id: number,
+        title: string,
+        bodyPart: string,
+        type: string
+      },
+      exerciseId: {  
+        _id: number,
+        title: string,
+        bodyPart: string,
+        type: string
+      },
+      reps: number,
+      restTime: number,
+      note: string
+    }
+  ]
+}
+
+type TrainingLine =  {
+    _id: number,
+    trainingId: {  
+      _id: number,
+      title: string,
+      bodyPart: string,
+      type: string
+    },
+    exerciseId: {  
+      _id: number,
+      title: string,
+      bodyPart: string,
+      type: string
+    },
+    reps: number,
+    restTime: number
+  }
+  
+class TrCourse extends Component<MyProps, MyState> {
+  state:MyState = {
     training: {
       _id: 0,
       title: '',
@@ -21,7 +85,7 @@ class TrCourse extends Component {
     },
     allExercises: [
       {
-        id: 0,
+        _id: 0,
         title: '',
         bodyPart: '',
         type: '',
@@ -29,10 +93,27 @@ class TrCourse extends Component {
     ],
     counter: 0,
     isEditing: false,
-    trainingLines: [],
+    trainingLines: [{
+      _id: 0,
+      trainingId: {  
+        _id: 0,
+        title: '',
+        bodyPart: '',
+        type: ''
+      },
+      exerciseId: {  
+        _id: 0,
+        title: '',
+        bodyPart: '',
+        type: ''
+      },
+      reps: 0,
+      restTime: 0,
+      note: ''
+    }]
   };
 
-  handleFocus = (e) => e.target.select();
+  handleFocus = (e: any) => e.target.select();
 
   async componentDidMount() {
     const { data: allExercises } = await getExercises();
@@ -52,16 +133,18 @@ class TrCourse extends Component {
   }
 
   async deleteEmptyLines() {
-    const trainingLines = this.state.trainingLines;
+    let trainingLines2 = this.state.trainingLines;
     let deletedEmptyTrainingLines = [];
-    for (const trainingLine of trainingLines) {
-      if (trainingLine.exerciseId._id === '6384a9c95cc12ea42d040af2') {
+    for (const trainingLine of trainingLines2) {
+      if (trainingLine.exerciseId._id === parseInt('6384a9c95cc12ea42d040af2')) {
         await deleteTrainingLine(trainingLine._id);
       } else {
         deletedEmptyTrainingLines.push(trainingLine);
       }
     }
-    this.setState({ trainingLines: deletedEmptyTrainingLines });
+
+
+    this.setState({trainingLines: deletedEmptyTrainingLines});
   }
 
   handleEdit = async () => {
@@ -108,7 +191,7 @@ class TrCourse extends Component {
     this.setState({ trainingLines: newTrainingLines });
   }
 
-  async handleSelect(e, trainingLine) {
+  async handleSelect(e: any, trainingLine: any) {
     const { trainingLines, allExercises } = this.state;
     let allTrainingLines = trainingLines;
     let newExercise = allExercises.filter(
@@ -121,15 +204,15 @@ class TrCourse extends Component {
     this.setState({ trainingLines: allTrainingLines });
   }
 
-  handleLineChange = (e, trainingLineId, selectedLineChange) => {
+  handleLineChange = (e: any, trainingLineId: number, selectedLineChange: string) => {
     let trainingLines = this.state.trainingLines;
-    let trainingLine = trainingLines.find(
+    let trainingLine: any = trainingLines.find(
       (trainingLine) => trainingLine._id === trainingLineId
     );
-    const index = trainingLines.indexOf(trainingLine);
+    const index: number = trainingLines.indexOf(trainingLine);
     let value = e.target.value;
 
-    if ((selectedLineChange === 'restTime') | (selectedLineChange === 'reps')) {
+    if ((selectedLineChange === 'restTime') || (selectedLineChange === 'reps')) {
       if (value > 999) value = 999;
       if (value === '') value = 0;
       parseInt(value);
@@ -140,14 +223,12 @@ class TrCourse extends Component {
     this.setState({ trainingLines });
   };
 
-  handleDelete(e) {
-    let trainingLines = this.state.trainingLines;
-    trainingLines = trainingLines.filter((line) => line._id !== e._id);
-
+  handleDelete(e: any) {
+    let trainingLines = this.state.trainingLines.filter((line) => line._id !== e._id);
     this.setState({ trainingLines });
   }
 
-  handleStart(trainingLines) {
+  handleStart(trainingLines: any) {
     if (trainingLines.length === 0) {
       alert('No exercises in the training');
       return;
@@ -156,7 +237,7 @@ class TrCourse extends Component {
     setTimeout(() => this.props.navigate(`/trainingCourses/${id}/start`));
   }
 
-  handleTitleChange(e) {
+  handleTitleChange(e: any) {
     let training = this.state.training;
     let targetValue = e.target.value;
     training.title = targetValue;
@@ -164,7 +245,7 @@ class TrCourse extends Component {
     this.setState({ training });
   }
 
-  handleEnter(e) {
+  handleEnter(e: any) {
     if (e.key === 'Enter') {
       this.handleEdit();
     }
@@ -242,7 +323,7 @@ class TrCourse extends Component {
                   trainingLine={trainingLine}
                   handleFocus={this.handleFocus}
                   handleLineChange={this.handleLineChange}
-                  handleDelete={(e) => this.handleDelete(trainingLine)}
+                  handleDelete={() => this.handleDelete(trainingLine)}
                 />
                 {!isEditing && (
                   <div className='col pt-1'>
@@ -254,7 +335,7 @@ class TrCourse extends Component {
                   style={style}
                   trainingLine={trainingLine}
                   handleFocus={this.handleFocus}
-                  handleLineChange={(e) =>
+                  handleLineChange={(e: any) =>
                     this.handleLineChange(e, trainingLine._id, 'restTime')
                   }
                 />

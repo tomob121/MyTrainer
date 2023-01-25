@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
-function CountDown({ time, afterCountDown }) {
+type CountDown = {
+  time: number,
+  afterCountDown: () => void
+}
+
+function CountDown({ time, afterCountDown }: CountDown) {
   const [countDown, setCountDown] = useState(time);
   
   if(afterCountDown)

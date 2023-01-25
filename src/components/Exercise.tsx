@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getTrainingLine } from '../service/trainingLineService';
+import { getTrainingLine } from '../service/trainingLineService.tsx';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
-import CountDown from '../utility/CountDown';
+import CountDown from '../utility/CountDown.tsx';
 
 function Exercise() {
   const { id } = useParams();
