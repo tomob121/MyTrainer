@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { getExercises } from '../service/exerciseService.tsx';
+import { Exercise } from '../utility/interface.tsx';
 
-class HomePage extends Component {
-  state = {
-    exercises: [{
-      title: '',
-      bodyPart: '',
-      type: ''
-    }],
+interface MyState {
+  exercises: Exercise[],
+  searchValue: string
+}
+
+class HomePage extends Component<{}, MyState> {
+  state: MyState = {
+    exercises: [], 
     searchValue: '',
   };
 
@@ -23,7 +25,7 @@ class HomePage extends Component {
     this.setState({ searchValue: e.currentTarget.value });
   };
 
-  renderTable(exercises: any) {
+  renderTable(exercises: Exercise[]) {
     const myStyle = {
       borderLeft: 'solid',
       borderRight: 'solid',
@@ -41,7 +43,7 @@ class HomePage extends Component {
             <th>Type</th>
           </tr>
         </thead>
-        {exercises.map((exercise: any) => (
+        {exercises.map((exercise: Exercise) => (
           <tbody key={exercise._id}>
             <tr>
               <td>
@@ -58,7 +60,7 @@ class HomePage extends Component {
 
   render() {
     const handleSearch = () => {
-      let searchedItem: object[] = [];
+      let searchedItem: Exercise[] = [];
       for (const iterator of this.state.exercises) {
         if (
           iterator.title

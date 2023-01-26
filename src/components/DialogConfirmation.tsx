@@ -1,6 +1,12 @@
 import React from 'react';
 
-const DialogConfirmation = ({
+interface Props {
+  message: string,
+  usingCancelDelete: () => void,
+  usingDeleteTrainign: () => void
+}
+
+const DialogConfirmation: React.FC<Props> = ({
   message,
   usingCancelDelete,
   usingDeleteTrainign,
@@ -31,7 +37,7 @@ const DialogConfirmation = ({
         }}
       >
         <h3 style={{ color: '#111' }}>{message}</h3>
-        <div style={{ display: 'flex', alighnItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <button
             onClick={() => usingDeleteTrainign()}
             style={{

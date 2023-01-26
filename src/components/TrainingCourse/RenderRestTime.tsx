@@ -1,6 +1,15 @@
 import React from 'react';
+import { TrainingLine } from '../../utility/interface';
 
-const RenderRestTime = ({
+interface Props {
+  handleFocus: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  isEditing: boolean,
+  style: any,
+  trainingLine: TrainingLine,
+  handleLineChange: (e: React.ChangeEvent<HTMLInputElement>, _id: string, restTime: string ) => void
+}
+
+const RenderRestTime: React.FC<Props> = ({
   handleFocus,
   isEditing,
   style,
@@ -20,7 +29,7 @@ const RenderRestTime = ({
             type={'number'}
             max={999}
             value={trainingLine.restTime}
-            onChange={(e) => handleLineChange(e, trainingLine.id, 'restTime')}
+            onChange={(e) => handleLineChange(e, trainingLine._id, 'restTime')}
           />
         </div>
       ) : (

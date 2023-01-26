@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
-import RightSideBar from './RightSideBar.jsx';
-import RenderRestTime from './RenderRestTime.jsx';
-import RenderRepChangeAndDelete from './RenderRepChangeAndDelete.jsx';
+import RightSideBar from './RightSideBar.tsx';
+import RenderRestTime from './RenderRestTime.tsx';
+import RenderRepChangeAndDelete from './RenderRepChangeAndDelete.tsx';
 import { getExercises } from '../../service/exerciseService.tsx';
 import {
   deleteTrainingLine,
@@ -10,82 +10,35 @@ import {
   getTrainingLine,
   postTrainingLineAll,
 } from '../../service/trainingLineService.tsx';
+import { Exercise, TrainingLine, Training } from '../../utility/interface.tsx'
 
 type MyProps ={
-  training: any,
-  id: number,
+  training: Training,
+  id: string,
   navigate: any
 }
 
 
 type MyState ={
-  training: {
-    _id: number,
-    title: string,
-    duration: number,
-    timer: any[]
-  }
-  allExercises: [
-    {
-      _id: number,
-      title: string,
-      bodyPart: string,
-      type: string
-    }
-  ],
+  training: Training
+  allExercises: Exercise[],
   counter: number,
   isEditing: boolean,
-  trainingLines: [
-    {
-      _id: number,
-      trainingId: {  
-        _id: number,
-        title: string,
-        bodyPart: string,
-        type: string
-      },
-      exerciseId: {  
-        _id: number,
-        title: string,
-        bodyPart: string,
-        type: string
-      },
-      reps: number,
-      restTime: number,
-      note: string
-    }
-  ]
+  trainingLines: TrainingLine[]
 }
 
-type TrainingLine =  {
-    _id: number,
-    trainingId: {  
-      _id: number,
-      title: string,
-      bodyPart: string,
-      type: string
-    },
-    exerciseId: {  
-      _id: number,
-      title: string,
-      bodyPart: string,
-      type: string
-    },
-    reps: number,
-    restTime: number
-  }
   
-class TrCourse extends Component<MyProps, MyState> {
-  state:MyState = {
+class TrCourse extends Component<MyProps> {
+  state: MyState = {
     training: {
-      _id: 0,
+      _id: '',
       title: '',
       duration: 0,
       timer: [],
     },
     allExercises: [
       {
-        _id: 0,
+        _id: '',
         title: '',
         bodyPart: '',
         type: '',
@@ -93,32 +46,15 @@ class TrCourse extends Component<MyProps, MyState> {
     ],
     counter: 0,
     isEditing: false,
-    trainingLines: [{
-      _id: 0,
-      trainingId: {  
-        _id: 0,
-        title: '',
-        bodyPart: '',
-        type: ''
-      },
-      exerciseId: {  
-        _id: 0,
-        title: '',
-        bodyPart: '',
-        type: ''
-      },
-      reps: 0,
-      restTime: 0,
-      note: ''
-    }]
+    trainingLines: []
   };
 
-  handleFocus = (e: any) => e.target.select();
+  handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => e.target.select();
 
   async componentDidMount() {
     const { data: allExercises } = await getExercises();
     const { data: trainingLines } = await getTrainingLine(
-      this.props.training._id
+      parseInt(this.props.training._id)
     );
     this.deleteEmptyLines();
     this.setState({
@@ -133,11 +69,11 @@ class TrCourse extends Component<MyProps, MyState> {
   }
 
   async deleteEmptyLines() {
-    let trainingLines2 = this.state.trainingLines;
-    let deletedEmptyTrainingLines = [];
-    for (const trainingLine of trainingLines2) {
-      if (trainingLine.exerciseId._id === parseInt('6384a9c95cc12ea42d040af2')) {
-        await deleteTrainingLine(trainingLine._id);
+    let trainingLines = this.state.trainingLines;
+    let deletedEmptyTrainingLines: TrainingLine[] = [];
+    for (const trainingLine of trainingLines) {
+      if (trainingLine.exerciseId._id === '6384a9c95cc12ea42d040af2') {
+        await deleteTrainingLine(parseInt(trainingLine._id));
       } else {
         deletedEmptyTrainingLines.push(trainingLine);
       }
@@ -191,7 +127,7 @@ class TrCourse extends Component<MyProps, MyState> {
     this.setState({ trainingLines: newTrainingLines });
   }
 
-  async handleSelect(e: any, trainingLine: any) {
+  async handleSelect(e: React.ChangeEvent<HTMLSelectElement>, trainingLine: any) {
     const { trainingLines, allExercises } = this.state;
     let allTrainingLines = trainingLines;
     let newExercise = allExercises.filter(
@@ -204,18 +140,16 @@ class TrCourse extends Component<MyProps, MyState> {
     this.setState({ trainingLines: allTrainingLines });
   }
 
-  handleLineChange = (e: any, trainingLineId: number, selectedLineChange: string) => {
+  handleLineChange = (e: React.ChangeEvent<HTMLInputElement>, trainingLineId: string, selectedLineChange: string) => {
     let trainingLines = this.state.trainingLines;
     let trainingLine: any = trainingLines.find(
       (trainingLine) => trainingLine._id === trainingLineId
     );
     const index: number = trainingLines.indexOf(trainingLine);
-    let value = e.target.value;
+    let value:number = parseInt(e.target.value);
 
     if ((selectedLineChange === 'restTime') || (selectedLineChange === 'reps')) {
-      if (value > 999) value = 999;
-      if (value === '') value = 0;
-      parseInt(value);
+      if (value > 999) value = 999
     }
     trainingLine[selectedLineChange] = value;
     trainingLines.splice(index, 1, trainingLine);
@@ -223,12 +157,12 @@ class TrCourse extends Component<MyProps, MyState> {
     this.setState({ trainingLines });
   };
 
-  handleDelete(e: any) {
-    let trainingLines = this.state.trainingLines.filter((line) => line._id !== e._id);
+  handleDelete(e: React.ChangeEvent<HTMLInputElement>) {
+    let trainingLines = this.state.trainingLines.filter((line) => line._id !== e.target.value);
     this.setState({ trainingLines });
   }
 
-  handleStart(trainingLines: any) {
+  handleStart(trainingLines: TrainingLine[]) {
     if (trainingLines.length === 0) {
       alert('No exercises in the training');
       return;
@@ -237,7 +171,7 @@ class TrCourse extends Component<MyProps, MyState> {
     setTimeout(() => this.props.navigate(`/trainingCourses/${id}/start`));
   }
 
-  handleTitleChange(e: any) {
+  handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
     let training = this.state.training;
     let targetValue = e.target.value;
     training.title = targetValue;
@@ -305,7 +239,7 @@ class TrCourse extends Component<MyProps, MyState> {
                   <select
                     className='col-auto'
                     value={trainingLine.exerciseId.title}
-                    onChange={(e) => this.handleSelect(e, trainingLine)}
+                    onChange={(e) => this.handleSelect(e , trainingLine)}
                   >
                     {allExercises.map((exercise) => (
                       <option key={exercise._id}>{exercise.title}</option>
@@ -323,7 +257,7 @@ class TrCourse extends Component<MyProps, MyState> {
                   trainingLine={trainingLine}
                   handleFocus={this.handleFocus}
                   handleLineChange={this.handleLineChange}
-                  handleDelete={() => this.handleDelete(trainingLine)}
+                  handleDelete={this.handleDelete}
                 />
                 {!isEditing && (
                   <div className='col pt-1'>
@@ -335,7 +269,7 @@ class TrCourse extends Component<MyProps, MyState> {
                   style={style}
                   trainingLine={trainingLine}
                   handleFocus={this.handleFocus}
-                  handleLineChange={(e: any) =>
+                  handleLineChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     this.handleLineChange(e, trainingLine._id, 'restTime')
                   }
                 />

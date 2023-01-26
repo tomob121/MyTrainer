@@ -19,7 +19,7 @@ export function putTraining(exercise: object) {
   return http.post(apiEndpoint, exercise);
 }
 
-export function deleteTraining(id: number) {
+export function deleteTraining(id: string) {
   http.delete(trainingLineApiEndpoint + '/all/' + id);
   return http.delete(apiEndpoint + '/' + id);
 }

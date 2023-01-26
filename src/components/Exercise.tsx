@@ -3,18 +3,19 @@ import { getTrainingLine } from '../service/trainingLineService.tsx';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Button } from 'react-bootstrap';
 import CountDown from '../utility/CountDown.tsx';
+import { TrainingLine } from '../utility/interface.tsx';
 
 function Exercise() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [trainingLines, setTrainingLines] = useState({});
+  const [trainingLines, setTrainingLines] = useState<TrainingLine[]>([]);
   const [exerciseStage, setExerciseStage] = useState(0);
   const [isRenderingRest, setIsRenderingRest] = useState(false);
   let navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await getTrainingLine(id);
+      const { data } = await getTrainingLine(parseInt(id!));
       setTrainingLines(data);
       setIsLoading(false);
     };

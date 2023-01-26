@@ -1,7 +1,17 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { TrainingLine } from './../../utility/interface';
 
-const RenderRepChangeAndDelete = ({
+interface Props{
+  isEditing: boolean,
+  style: any,
+  trainingLine: TrainingLine
+  handleFocus: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleLineChange: (e: React.ChangeEvent<HTMLInputElement>, _id: string, reps: string) => void
+  handleDelete: (e: any) => void
+}
+
+const RenderRepChangeAndDelete: React.FC<Props> = ({
   isEditing,
   style,
   trainingLine,
@@ -25,7 +35,7 @@ const RenderRepChangeAndDelete = ({
               value={trainingLine.reps}
             />
             <Button
-              onClick={(e) => handleDelete(trainingLine)}
+              onClick={(e) => handleDelete(e)}
               style={{ marginLeft: 30 }}
               className='btn-danger'
             >
@@ -35,7 +45,7 @@ const RenderRepChangeAndDelete = ({
           <div className='col-2'>
             <input
               onFocus={handleFocus}
-              maxLength='80'
+              maxLength={80}
               style={style.repNumberStyle}
               value={trainingLine.note}
               placeholder={'Enter note here'}

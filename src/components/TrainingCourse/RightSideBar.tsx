@@ -1,9 +1,26 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { Training } from '../../utility/interface';
 
-const RightSideBar = (props) => {
-  const { training, handleEdit, handleAddExercise, handleStart, isEditing } =
-    props;
+interface Props {
+  training: {
+    _id: string,
+    title: string,
+    duration: number,
+    timer: any[]
+  },
+  handleEdit: () => void,
+  handleAddExercise: () => void,
+  handleStart: (training: Training) => void,
+  isEditing: boolean
+}
+
+const RightSideBar: React.FC<Props> = ({ 
+  training,
+  handleEdit,
+  handleAddExercise,
+  handleStart,
+  isEditing }) => {
 
   return (
     <div className='col-3'>

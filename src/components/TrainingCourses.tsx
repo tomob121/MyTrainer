@@ -5,8 +5,17 @@ import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 import DialogConfirmation from './DialogConfirmation.tsx';
 import { getTrainingLines } from '../service/trainingLineService.tsx';
+import { Training, TrainingLine } from '../utility/interface.tsx';
 
-const TrainingCourses = ({
+interface Props {
+  trainingsProps: Training[],
+  deleteTraining: (id: string) => void,
+  addTraining: () => void,
+  trainingLinesProps: TrainingLine[]
+
+}
+
+const TrainingCourses: React.FC<Props> = ({
   trainingsProps,
   deleteTraining,
   addTraining,
@@ -24,14 +33,14 @@ const TrainingCourses = ({
   };
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [trainings, setTrainings] = useState([]);
-  const [trainingLines, setTrainingLines] = useState([]);
+  const [trainings, setTrainings] = useState<Training[]>([]);
+  const [trainingLines, setTrainingLines] = useState<TrainingLine[]>([]);
   const [followUpdate, setFollowUpdate] = useState(0);
   const [dialog, setDialog] = useState({
     message: '',
     isLoading: false,
   });
-  const currentId = useRef();
+  const currentId = useRef<any>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +52,7 @@ const TrainingCourses = ({
     setTrainings(trainingsProps);
   }, [trainingsProps, followUpdate]);
 
-  function handleDeleteTraining(trainingId, stringValue) {
+  function handleDeleteTraining(trainingId: string, stringValue: string) {
     let trainingLinesFiltered = trainingLines.filter(
       (trl) => trl.trainingId._id === trainingId
     );
@@ -73,28 +82,28 @@ const TrainingCourses = ({
     setFollowUpdate(followUpdate + 1);
   }
 
-  function convertHMS(value) {
+  function convertHMS(value: string ) {
     const sec = parseInt(value, 10); // convert value to number if it's string
     let hours = Math.floor(sec / 3600); // get hours
     let minutes = Math.floor((sec - hours * 3600) / 60); // get minutes
     let seconds = sec - hours * 3600 - minutes * 60; //  get seconds
     // add 0 if value < 10; Example: 2 => 02
     if (hours < 10) {
-      hours = '0' + hours;
+      hours = parseInt('0') + hours;
     }
     if (minutes < 10) {
-      minutes = '0' + minutes;
+      minutes = parseInt('0') + minutes;
     }
     if (seconds < 10) {
-      seconds = '0' + seconds;
+      seconds = parseInt('0') + seconds;
     }
 
     return minutes + ':' + seconds; // Return is MM : SS
   }
 
-  function handleAvrageTrainingDuration(trainingID) {
+  function handleAvrageTrainingDuration(trainingID: string) {
     let filteredTraining = trainings.filter(
-      (training) => training.id === trainingID
+      (training) => training._id === trainingID
     );
 
     let sum = filteredTraining[0].timer.reduce(
@@ -107,12 +116,14 @@ const TrainingCourses = ({
 
     return convertHMS(sum);
   }
+
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
 
   return (
     <Container>
+      Text
       <div className='row mt-3'>
         <div className='col'>
           {trainings.map((training) => (
@@ -143,14 +154,14 @@ const TrainingCourses = ({
                 <div className='col'>
                   <Button
                     className='btn btn-danger '
-                    onClick={() => handleDeleteTraining(training._id)}
+                    onClick={() => handleDeleteTraining(training._id, '')}
                   >
                     Delete
                   </Button>
                 </div>
                 {trainingLinesProps.length > 0 && (
                   <div className='col-7' style={{ textAlign: 'end' }}>
-                    Avg. Duration: {handleAvrageTrainingDuration(training.id)}
+                    Avg. Duration: {handleAvrageTrainingDuration(training._id)}
                   </div>
                 )}
               </div>

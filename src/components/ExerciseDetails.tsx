@@ -2,14 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { getExercise } from '../service/exerciseService.tsx';
+import { Exercise } from '../utility/interface.tsx';
 
 function ExerciseDetails() {
   const { id } = useParams();
-  const [exercise, setExercise] = useState({});
+  const [exercise, setExercise] = useState<Exercise>({
+    _id: '',
+    title: '',
+    bodyPart: '',
+    type: ''
+  });
 
   useEffect(() => {
     const fetchExercise = async () => {
-      const { data: exercise } = await getExercise(id);
+      const { data: exercise } = await getExercise(parseInt(id!));
       setExercise(exercise);
     };
     fetchExercise();
