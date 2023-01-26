@@ -15,7 +15,7 @@ import { Exercise, TrainingLine, Training } from '../../utility/interface.tsx'
 type MyProps ={
   training: Training,
   id: string,
-  navigate: any
+  navigate: (navigateLocation: string) => void
 }
 
 
@@ -54,7 +54,7 @@ class TrCourse extends Component<MyProps> {
   async componentDidMount() {
     const { data: allExercises } = await getExercises();
     const { data: trainingLines } = await getTrainingLine(
-      parseInt(this.props.training._id)
+      this.props.training._id
     );
     this.deleteEmptyLines();
     this.setState({
@@ -62,6 +62,7 @@ class TrCourse extends Component<MyProps> {
       allExercises,
       trainingLines,
     });
+    console.log(trainingLines);
   }
 
   componentWillUnmount() {
@@ -73,7 +74,7 @@ class TrCourse extends Component<MyProps> {
     let deletedEmptyTrainingLines: TrainingLine[] = [];
     for (const trainingLine of trainingLines) {
       if (trainingLine.exerciseId._id === '6384a9c95cc12ea42d040af2') {
-        await deleteTrainingLine(parseInt(trainingLine._id));
+        await deleteTrainingLine(trainingLine._id);
       } else {
         deletedEmptyTrainingLines.push(trainingLine);
       }

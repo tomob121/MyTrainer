@@ -18,14 +18,14 @@ const ExerciseEndScreen = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: trainingLine } = await getTrainingLine(parseInt(id!));
+      const { data: trainingLine } = await getTrainingLine(id!);
       setTrainingLine(trainingLine);
       const { data: training } = await getTrainings();
       setTraining(training.filter((training: Training) => training._id === id!)[0]);
     };
     fetchData();
   }, []);
-  console.log(training);
+
   return (
     <Container>
       <div>

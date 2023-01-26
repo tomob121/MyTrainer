@@ -15,7 +15,7 @@ function Exercise() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await getTrainingLine(parseInt(id!));
+      const { data } = await getTrainingLine(id!);
       setTrainingLines(data);
       setIsLoading(false);
     };

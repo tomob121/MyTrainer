@@ -7,7 +7,7 @@ export function getTrainings() {
   return http.get(apiEndpoint);
 }
 
-export function getTraining(id: number) {
+export function getTraining(id: string) {
   return http.get(apiEndpoint + '/' + id);
 }
 

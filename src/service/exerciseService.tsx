@@ -6,7 +6,7 @@ export function getExercises() {
   return http.get(apiEndpoint);
 }
 
-export function getExercise(id: number) {
+export function getExercise(id: string) {
   return http.get(apiEndpoint + '/' + id);
 }
 
@@ -18,6 +18,6 @@ export function putExercise(exercise: object) {
   return http.post(apiEndpoint, exercise);
 }
 
-export function deleteExercise(id: number) {
+export function deleteExercise(id: string) {
   return http.delete(apiEndpoint + id);
 }
