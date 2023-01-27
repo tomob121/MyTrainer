@@ -62,7 +62,6 @@ class TrCourse extends Component<MyProps> {
       allExercises,
       trainingLines,
     });
-    console.log(trainingLines);
   }
 
   componentWillUnmount() {
