@@ -4,6 +4,7 @@ import RightSideBar from './RightSideBar.tsx';
 import RenderRestTime from './RenderRestTime.tsx';
 import RenderRepChangeAndDelete from './RenderRepChangeAndDelete.tsx';
 import { getExercises } from '../../service/exerciseService.tsx';
+import { putTraining } from '../../service/trainingService.tsx';
 import {
   deleteTrainingLine,
   postTrainingLine,
@@ -46,7 +47,7 @@ class TrCourse extends Component<MyProps> {
     ],
     counter: 0,
     isEditing: false,
-    trainingLines: []
+    trainingLines: [],
   };
 
   handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => e.target.select();
@@ -54,14 +55,15 @@ class TrCourse extends Component<MyProps> {
   async componentDidMount() {
     const { data: allExercises } = await getExercises();
     const { data: trainingLines } = await getTrainingLine(
-      this.props.training._id
-    );
-    this.deleteEmptyLines();
-    this.setState({
-      training: this.props.training,
-      allExercises,
-      trainingLines,
-    });
+      this.props.id
+      );
+      this.deleteEmptyLines();
+      this.setState({
+        training: this.props.training,
+        allExercises,
+        trainingLines,
+      });
+      console.log(this.state);
   }
 
   componentWillUnmount() {
@@ -109,7 +111,6 @@ class TrCourse extends Component<MyProps> {
     }
 
     this.setState({ isEditing });
-    this.setState({ training });
   };
 
   async handleAddExercise() {
@@ -127,7 +128,7 @@ class TrCourse extends Component<MyProps> {
     this.setState({ trainingLines: newTrainingLines });
   }
 
-  async handleSelect(e: React.ChangeEvent<HTMLSelectElement>, trainingLine: any) {
+  async handleSelect(e: React.ChangeEvent<HTMLSelectElement>, trainingLine: TrainingLine) {
     const { trainingLines, allExercises } = this.state;
     let allTrainingLines = trainingLines;
     let newExercise = allExercises.filter(
@@ -162,12 +163,21 @@ class TrCourse extends Component<MyProps> {
     this.setState({ trainingLines });
   }
 
-  handleStart(trainingLines: TrainingLine[]) {
+  async handleStart(trainingLines: TrainingLine[]) {
     if (trainingLines.length === 0) {
       alert('No exercises in the training');
       return;
     }
-    const id = this.props.id;
+    const id = this.state.training._id;
+    const training = this.state.training
+    const data = {
+      title: training.title,
+      timer: training.timer,
+      duration: training.duration
+    }
+    data.timer.push(0)
+    console.log(data);
+    await putTraining(id, data )
     setTimeout(() => this.props.navigate(`/trainingCourses/${id}/start`));
   }
 
@@ -179,7 +189,7 @@ class TrCourse extends Component<MyProps> {
     this.setState({ training });
   }
 
-  handleEnter(e: any) {
+  handleEnter(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       this.handleEdit();
     }
@@ -212,6 +222,9 @@ class TrCourse extends Component<MyProps> {
       },
     };
 
+
+
+  try {
     return (
       <Container>
         <div className='row pt-3'>
@@ -251,14 +264,14 @@ class TrCourse extends Component<MyProps> {
                     {trainingLine.exerciseId.title}
                   </div>
                 )}
-                <RenderRepChangeAndDelete
+                {/* <RenderRepChangeAndDelete
                   isEditing={isEditing}
                   style={style}
                   trainingLine={trainingLine}
                   handleFocus={this.handleFocus}
                   handleLineChange={this.handleLineChange}
                   handleDelete={this.handleDelete}
-                />
+                /> */}
                 {!isEditing && (
                   <div className='col pt-1'>
                     {trainingLine.note && 'Note:'} {trainingLine.note}
@@ -286,7 +299,11 @@ class TrCourse extends Component<MyProps> {
         </div>
       </Container>
     );
+  } catch (error) {
+  
   }
+  }
+  
 }
 
 export default TrCourse;

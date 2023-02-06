@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import TrCourse from './TrCourse';
 import { Training } from '../../utility/interface';
-import { Container } from 'react-bootstrap';
 
 interface Props {
   trainingsProps: Training[],

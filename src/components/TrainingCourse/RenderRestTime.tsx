@@ -6,7 +6,7 @@ interface Props {
   isEditing: boolean,
   style: any,
   trainingLine: TrainingLine,
-  handleLineChange: (e: React.ChangeEvent<HTMLInputElement>, _id: string, restTime: string ) => void
+  handleLineChange: (e: React.ChangeEvent<HTMLInputElement>, _id: string ) => void
 }
 
 const RenderRestTime: React.FC<Props> = ({
@@ -29,7 +29,8 @@ const RenderRestTime: React.FC<Props> = ({
             type={'number'}
             max={999}
             value={trainingLine.restTime}
-            onChange={(e) => handleLineChange(e, trainingLine._id, 'restTime')}
+            onChange={(e) => handleLineChange(e, trainingLine._id)}
+            name='restTime'
           />
         </div>
       ) : (

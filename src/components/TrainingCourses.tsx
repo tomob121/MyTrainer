@@ -6,20 +6,11 @@ import 'simplebar/dist/simplebar.min.css';
 import DialogConfirmation from './DialogConfirmation.tsx';
 import { getTrainingLines } from '../service/trainingLineService.tsx';
 import { Training, TrainingLine } from '../utility/interface.tsx';
+import { deleteTraining, postTraining, getTrainings } from '../service/trainingService.tsx';
 
-interface Props {
-  trainingsProps: Training[],
-  deleteTraining: (id: string) => void,
-  addTraining: () => void,
-  trainingLinesProps: TrainingLine[]
 
-}
 
-const TrainingCourses: React.FC<Props> = ({
-  trainingsProps,
-  deleteTraining,
-  addTraining,
-  trainingLinesProps,
+const TrainingCourses: React.FC = ({
 }) => {
   const styles = {
     cardStyle: {
@@ -35,7 +26,6 @@ const TrainingCourses: React.FC<Props> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [trainingLines, setTrainingLines] = useState<TrainingLine[]>([]);
-  const [followUpdate, setFollowUpdate] = useState(0);
   const [dialog, setDialog] = useState({
     message: '',
     isLoading: false,
@@ -46,13 +36,14 @@ const TrainingCourses: React.FC<Props> = ({
     const fetchData = async () => {
       const { data } = await getTrainingLines();
       setTrainingLines(data);
+      const { data: trainings } = await getTrainings()
+      setTrainings(trainings)
       setIsLoading(false);
     };
     fetchData();
-    setTrainings(trainingsProps);
-  }, [trainingsProps, followUpdate]);
+  }, []);
 
-  function handleDeleteTraining(trainingId: string, stringValue: string) {
+  async function handleDeleteTraining(trainingId: string, stringValue: string) {
     let trainingLinesFiltered = trainingLines.filter(
       (trl) => trl.trainingId._id === trainingId
     );
@@ -69,17 +60,26 @@ const TrainingCourses: React.FC<Props> = ({
       message: '',
       isLoading: false,
     });
-
-    deleteTraining(trainingId);
+    let filtered = trainings.filter(training => training._id !== trainingId)
+    setTrainings(filtered)
+    await deleteTraining(trainingId)
   }
 
   const handleCancleDelete = () => {
     setDialog({ message: '', isLoading: false });
   };
 
-  function handleAddTraining() {
-    addTraining();
-    setFollowUpdate(followUpdate + 1);
+ async function handleAddTraining() {
+  let number = 0
+  const training = {
+    title: `MyTraining ${number}`,
+    duration: 0,
+    timer: [],
+  }
+  const { data } = await postTraining(training)
+  const addedTrainings: Training[] = [data, ...trainings]
+  setTrainings(addedTrainings)
+    navigate(`/trainingCourses/${data._id}`,{state: {isEditing: true}})
   }
 
   function convertHMS(value: string ) {
@@ -114,7 +114,7 @@ const TrainingCourses: React.FC<Props> = ({
 
     if (!sum) sum = 0;
 
-    return convertHMS(sum);
+    return convertHMS(sum.toString());
   }
 
   if (isLoading) {
@@ -158,7 +158,7 @@ const TrainingCourses: React.FC<Props> = ({
                     Delete
                   </Button>
                 </div>
-                {trainingLinesProps.length > 0 && (
+                {trainingLines.length > 0 && (
                   <div className='col-7' style={{ textAlign: 'end' }}>
                     Avg. Duration: {handleAvrageTrainingDuration(training._id)}
                   </div>

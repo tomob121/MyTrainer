@@ -22,7 +22,7 @@ export interface Training {
     _id: string,
     title: string,
     duration: number,
-    timer: any[]
+    timer: number[]
   }
 
 export interface Exercise {

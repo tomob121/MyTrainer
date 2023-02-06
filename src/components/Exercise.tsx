@@ -11,6 +11,7 @@ function Exercise() {
   const [trainingLines, setTrainingLines] = useState<TrainingLine[]>([]);
   const [exerciseStage, setExerciseStage] = useState(0);
   const [isRenderingRest, setIsRenderingRest] = useState(false);
+  const [exerciseDuration, setExerciseDuration] = useState(0)
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -108,6 +109,7 @@ function Exercise() {
               </p>
             )}
           </div>
+  
         </div>
       )}
     </Container>

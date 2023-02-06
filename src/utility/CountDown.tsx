@@ -9,7 +9,7 @@ function CountDown({ time, afterCountDown }: CountDown) {
   const [countDown, setCountDown] = useState(time);
   
   if(afterCountDown)
-  if (countDown === 0) setTimeout(() => afterCountDown(), 1000);
+  if (countDown === 0) setTimeout(() => afterCountDown());
 
   setTimeout(() => setCountDown(countDown - 1), 1000);  
   return <div>{countDown}</div>;

@@ -3,12 +3,7 @@ import { Button } from 'react-bootstrap';
 import { Training } from '../../utility/interface';
 
 interface Props {
-  training: {
-    _id: string,
-    title: string,
-    duration: number,
-    timer: any[]
-  },
+  training: Training
   handleEdit: () => void,
   handleAddExercise: () => void,
   handleStart: (training: Training) => void,
