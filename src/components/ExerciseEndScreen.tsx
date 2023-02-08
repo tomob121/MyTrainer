@@ -7,39 +7,39 @@ import { getTrainings } from '../service/trainingService.tsx'
 import { TrainingLine, Training } from '../utility/interface.tsx'
 
 const ExerciseEndScreen = () => {
-    const { id } = useParams()
-    const [trainingLine, setTrainingLine] = useState<TrainingLine[]>([])
-    const [training, setTraining] = useState<Training>({
-        _id: '',
-        title: 'string',
-        duration: 0,
-        timer: [],
-    })
+  const { id } = useParams()
+  const [trainingLine, setTrainingLine] = useState<TrainingLine[]>([])
+  const [training, setTraining] = useState<Training>({
+    _id: '',
+    title: 'string',
+    duration: 0,
+    timer: [],
+  })
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const { data: trainingLine } = await getTrainingLine(id!)
-            setTrainingLine(trainingLine)
-            const { data: training } = await getTrainings()
-            setTraining(
-                training.filter((training: Training) => training._id === id!)[0]
-            )
-        }
-        fetchData()
-    }, [])
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: trainingLine } = await getTrainingLine(id!)
+      setTrainingLine(trainingLine)
+      const { data: training } = await getTrainings()
+      setTraining(
+        training.filter((training: Training) => training._id === id!)[0]
+      )
+    }
+    fetchData()
+  }, [])
 
-    return (
-        <Container>
-            <div>
-                <h1>End of {training.title}</h1>
-                {trainingLine.map((line) => (
-                    <li className="m-3" key={line._id}>
-                        {line.exerciseId.title}
-                    </li>
-                ))}
-            </div>
-        </Container>
-    )
+  return (
+    <Container>
+      <div>
+        <h1>End of {training.title}</h1>
+        {trainingLine.map((line) => (
+          <li className="m-3" key={line._id}>
+            {line.exerciseId.title}
+          </li>
+        ))}
+      </div>
+    </Container>
+  )
 }
 
 export default ExerciseEndScreen

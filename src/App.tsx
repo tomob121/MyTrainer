@@ -11,35 +11,32 @@ import TrCourse from './components/TrainingCourse/TrCourse.tsx'
 const TrainingCourses = lazy(() => import('./components/TrainingCourses.tsx'))
 
 function App() {
-    document.title = 'MyTrainer'
+  document.title = 'MyTrainer'
 
-    return (
-        <div>
-            <NavBar />
-            <Routes>
-                <Route path="/exercises/:id" element={<ExerciseDetails />} />
-                <Route path="/exercises" element={<HomePage />} />
-                <Route
-                    path="/trainingCourses/:id/end"
-                    element={<ExerciseEndScreen />}
-                />
-                <Route
-                    path="/trainingCourses/:id/start"
-                    element={<Exercise />}
-                />
-                <Route path="/trainingCourses/:id" element={<TrCourse />} />
-                <Route
-                    path="/trainingCourses"
-                    element={
-                        <Suspense fallback={<h1></h1>}>
-                            <TrainingCourses />
-                        </Suspense>
-                    }
-                />
-                <Route path="/" element={<HomePage />} />
-            </Routes>
-        </div>
-    )
+  return (
+    <div>
+      <NavBar />
+      <Routes>
+        <Route path="/exercises/:id" element={<ExerciseDetails />} />
+        <Route path="/exercises" element={<HomePage />} />
+        <Route
+          path="/trainingCourses/:id/end"
+          element={<ExerciseEndScreen />}
+        />
+        <Route path="/trainingCourses/:id/start" element={<Exercise />} />
+        <Route path="/trainingCourses/:id" element={<TrCourse />} />
+        <Route
+          path="/trainingCourses"
+          element={
+            <Suspense fallback={<h1></h1>}>
+              <TrainingCourses />
+            </Suspense>
+          }
+        />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    </div>
+  )
 }
 
 export default App
