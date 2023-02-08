@@ -1,13 +1,13 @@
 export interface TrainingLine {
-  _id: string
+  _id?: string
   trainingId: {
-    _id: string
+    _id?: string
     title: string
     bodyPart: string
     type: string
   }
   exerciseId: {
-    _id: string
+    _id?: string
     title: string
     bodyPart: string
     type: string
@@ -29,4 +29,12 @@ export interface Exercise {
   title: string
   bodyPart: string
   type: string
+}
+
+export interface UpdateTrainingLine {
+  trainingId: string
+  exerciseId: string
+  reps: number
+  restTime: number
+  note: string
 }

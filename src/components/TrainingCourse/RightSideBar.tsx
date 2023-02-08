@@ -1,13 +1,15 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { Training } from '../../utility/interface'
+import { UpdateTrainingLine } from '../../utility/interface'
 
 interface Props {
   training: Training
   handleEdit: () => void
-  handleAddExercise: () => void
+  handleAddExercise: (trainingLine: UpdateTrainingLine) => void
   handleStart: (training: Training) => void
   isEditing: boolean
+  id: string
 }
 
 const RightSideBar: React.FC<Props> = ({
@@ -16,6 +18,7 @@ const RightSideBar: React.FC<Props> = ({
   handleAddExercise,
   handleStart,
   isEditing,
+  id,
 }) => {
   return (
     <div className="col-3">
@@ -27,7 +30,15 @@ const RightSideBar: React.FC<Props> = ({
       <div className="col-auto">
         {isEditing ? (
           <Button
-            onClick={() => handleAddExercise()}
+            onClick={() =>
+              handleAddExercise({
+                trainingId: id,
+                exerciseId: '6384a9c95cc12ea42d040af2',
+                reps: 0,
+                restTime: 0,
+                note: '',
+              })
+            }
             style={{ color: 'white' }}
             className="btn btn-secondary m-1 col-5"
           >

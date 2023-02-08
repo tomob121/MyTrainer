@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import HomePage from './components/HomePage.tsx'
+import AllExercises from './components/AllExercises.tsx'
 import Exercise from './components/Exercise.tsx'
 import NavBar from './components/NavBar.tsx'
 import ExerciseEndScreen from './components/ExerciseEndScreen.tsx'
@@ -18,7 +18,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/exercises/:id" element={<ExerciseDetails />} />
-        <Route path="/exercises" element={<HomePage />} />
+        <Route path="/exercises" element={<AllExercises />} />
         <Route
           path="/trainingCourses/:id/end"
           element={<ExerciseEndScreen />}
@@ -33,7 +33,7 @@ function App() {
             </Suspense>
           }
         />
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<AllExercises />} />
       </Routes>
     </div>
   )

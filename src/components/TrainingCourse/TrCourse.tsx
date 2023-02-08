@@ -13,6 +13,8 @@ import {
 } from '../../service/trainingLineService.tsx'
 import { Exercise, TrainingLine, Training } from '../../utility/interface.tsx'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
+import { UpdateTrainingLine } from '../../utility/interface.tsx'
 
 type LocationState = {
   isEditing: boolean
@@ -54,29 +56,41 @@ const TrCourse: React.FC = () => {
       borderRadius: 4,
     },
   }
+  const queryClient = useQueryClient()
 
-  const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) =>
-    e.target.select()
+  const [allExercisesQuery, trainingLinesQuery, trainingQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ['allExercises', 'trCourse'],
+        queryFn: () => getExercises().then((data) => data.data),
+        onSuccess(data: Exercise[]) {
+          setAllExercises(data)
+        },
+      },
+      {
+        queryKey: ['trainingLines', 'trCourse'],
+        queryFn: () => getTrainingLine(id!).then((data) => data.data),
+        onSuccess(data: TrainingLine[]) {
+          setTrainingLines(data)
+        },
+      },
+      {
+        queryKey: ['training', 'trCourse'],
+        queryFn: () => getTraining(id!).then((data) => data.data),
+        onSuccess(data: Training) {
+          setTraining(data)
+        },
+      },
+    ],
+  })
 
   useEffect(() => {
-    deleteEmptyLines()
-    const fetchData = async () => {
-      const { data: allExercisesData } = await getExercises()
-      setAllExercises(allExercisesData)
-      const { data: trainingLinesData } = await getTrainingLine(id!)
-      setTrainingLines(trainingLinesData)
-      const { data: trainig } = await getTraining(id!)
-      setTraining(trainig)
-    }
-    fetchData()
-
     if (location.state) {
       const { isEditing } = location?.state as LocationState
       if (isEditing) {
         setIsEditing(true)
       }
     }
-
     return () => {
       deleteEmptyLines()
     }
@@ -86,7 +100,7 @@ const TrCourse: React.FC = () => {
     let deletedEmptyTrainingLines: TrainingLine[] = []
     for (const trainingLine of trainingLines) {
       if (trainingLine.exerciseId._id === '6384a9c95cc12ea42d040af2') {
-        await deleteTrainingLine(trainingLine._id)
+        await deleteTrainingLine(trainingLine._id!)
       } else {
         deletedEmptyTrainingLines.push(trainingLine)
       }
@@ -107,32 +121,34 @@ const TrCourse: React.FC = () => {
       setIsEditing(true)
     }
 
-    let postTrainingLines = JSON.parse(JSON.stringify([...trainingLines]))
+    let putTrainingLines = JSON.parse(JSON.stringify([...trainingLines]))
 
     if (isEditing) {
-      for (const trainingLine of postTrainingLines) {
+      for (const trainingLine of putTrainingLines) {
         delete trainingLine.__v
-        trainingLine.trainingId =
-          trainingLine.trainingId._id || trainingLine.trainingId
-        trainingLine.exerciseId =
-          trainingLine.exerciseId._id || trainingLine.exerciseId
+        trainingLine.trainingId = trainingLine.trainingId._id
+        trainingLine.exerciseId = trainingLine.exerciseId._id
       }
-      await putTrainingLineAll(postTrainingLines)
+      await putTrainingLineAll(putTrainingLines)
     }
   }
+  const updateExerciseMutation = useMutation({
+    mutationFn: (trainingLines: UpdateTrainingLine[]) => {
+      return putTrainingLineAll(trainingLines)
+    },
+    onSuccess(data) {
+      setTrainingLines((prevstate) => data.data)
+    },
+  })
 
-  async function handleAddExercise() {
-    const trainingLineData = {
-      trainingId: training!._id!,
-      exerciseId: '6384a9c95cc12ea42d040af2',
-      reps: 0,
-      restTime: 0,
-      note: '',
-    }
-
-    const { data: newTrainingLine } = await postTrainingLine(trainingLineData)
-    setTrainingLines([...trainingLines, newTrainingLine])
-  }
+  const addExerciseMutation = useMutation({
+    mutationFn: (trainingLine: UpdateTrainingLine) => {
+      return postTrainingLine(trainingLine)
+    },
+    onSuccess(data) {
+      setTrainingLines((prevstate) => [...prevstate, data.data])
+    },
+  })
 
   async function handleDelete(id: string) {
     const trainingLineData = trainingLines.filter((line) => line._id !== id)
@@ -211,6 +227,13 @@ const TrCourse: React.FC = () => {
     if (e.key === 'Enter') handleEdit()
   }
 
+  if (
+    allExercisesQuery.isLoading ||
+    trainingLinesQuery.isLoading ||
+    trainingQuery.isLoading
+  )
+    return <h1>Loading...</h1>
+
   return (
     <Container>
       <div className="row pt-3">
@@ -255,9 +278,9 @@ const TrCourse: React.FC = () => {
                 isEditing={isEditing}
                 style={style}
                 trainingLine={trainingLine}
-                handleFocus={handleFocus}
+                handleFocus={(e) => e.target.select()}
                 handleLineChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleLineChange(e, trainingLine._id)
+                  handleLineChange(e, trainingLine._id!)
                 }
                 handleDelete={handleDelete}
               />
@@ -270,9 +293,9 @@ const TrCourse: React.FC = () => {
                 isEditing={isEditing}
                 style={style}
                 trainingLine={trainingLine}
-                handleFocus={handleFocus}
+                handleFocus={(e) => e.target.select()}
                 handleLineChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleLineChange(e, trainingLine._id)
+                  handleLineChange(e, trainingLine._id!)
                 }
               />
             </div>
@@ -281,9 +304,10 @@ const TrCourse: React.FC = () => {
         <RightSideBar
           training={training}
           handleEdit={() => handleEdit()}
-          handleAddExercise={() => handleAddExercise()}
+          handleAddExercise={addExerciseMutation.mutate}
           handleStart={() => handleStart(trainingLines)}
           isEditing={isEditing}
+          id={id!}
         />
       </div>
     </Container>

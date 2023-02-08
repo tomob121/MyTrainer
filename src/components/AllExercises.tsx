@@ -5,7 +5,7 @@ import { getExercises } from '../service/exerciseService.tsx'
 import { Exercise } from '../utility/interface.tsx'
 import { useQuery } from '@tanstack/react-query'
 
-const HomePage: React.FC = () => {
+const AllExercises: React.FC = () => {
   const [exercises, setExercise] = useState<Exercise[]>([])
   const [searchValue, setSearchValue] = useState('')
 
@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
   }
 
   const exercisesQuery = useQuery({
-    queryKey: ['exercises', 'homePage'],
+    queryKey: ['exercises', 'allExercises'],
     queryFn: () => getExercises().then((exercise) => exercise.data),
     onSuccess(data) {
       setExercise(data)
@@ -85,4 +85,4 @@ const HomePage: React.FC = () => {
   )
 }
 
-export default HomePage
+export default AllExercises

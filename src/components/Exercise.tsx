@@ -4,27 +4,23 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Container, Button } from 'react-bootstrap'
 import CountDown from '../utility/CountDown.tsx'
 import { TrainingLine } from '../utility/interface.tsx'
+import { useQuery } from '@tanstack/react-query'
 
 function Exercise() {
   const { id } = useParams()
-  const [isLoading, setIsLoading] = useState(true)
   const [trainingLines, setTrainingLines] = useState<TrainingLine[]>([])
   const [exerciseStage, setExerciseStage] = useState(0)
   const [isRenderingRest, setIsRenderingRest] = useState(false)
   const [exerciseDuration, setExerciseDuration] = useState(0)
   let navigate = useNavigate()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await getTrainingLine(id!)
+  const trainingLineQuery = useQuery({
+    queryKey: ['trainingLines', 'exercise'],
+    queryFn: () => getTrainingLine(id!).then((data) => data.data),
+    onSuccess(data) {
       setTrainingLines(data)
-      setIsLoading(false)
-    }
-    fetchData()
-    return () => {
-      setIsLoading(true)
-    }
-  }, [])
+    },
+  })
 
   function nextExercise() {
     if (exerciseStage === trainingLines.length - 1)
@@ -51,8 +47,13 @@ function Exercise() {
       borderRadius: 5,
     },
   }
-  if (isLoading) {
+
+  if (trainingLineQuery.isLoading) {
     return <h1>Loading...</h1>
+  }
+  if (trainingLineQuery.isError) {
+    console.log(trainingLineQuery.error)
+    return <h1>Error</h1>
   }
 
   return (
@@ -72,10 +73,10 @@ function Exercise() {
         ) : (
           <div className="row col-3 mt-5">
             <div className="col-auto">
-              {trainingLines[exerciseStage].exerciseId.title}
+              {trainingLines[exerciseStage]?.exerciseId.title}
             </div>
             <div className="pl-1 col-auto">
-              {trainingLines[exerciseStage].reps}
+              {trainingLines[exerciseStage]?.reps}
             </div>
           </div>
         )}
@@ -101,11 +102,11 @@ function Exercise() {
         <div className="row">
           <div className="col-4"></div>
           <div className="col-3">
-            {trainingLines[exerciseStage].note.length === 0 ? (
+            {trainingLines[exerciseStage]?.note.length === 0 ? (
               ''
             ) : (
               <p style={styles.paragraphBorder}>
-                {trainingLines[exerciseStage].note}
+                {trainingLines[exerciseStage]?.note}
               </p>
             )}
           </div>

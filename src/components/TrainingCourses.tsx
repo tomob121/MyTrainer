@@ -11,12 +11,7 @@ import {
   postTraining,
   getTrainings,
 } from '../service/trainingService.tsx'
-import {
-  useQuery,
-  useQueries,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query'
+import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
 
 const TrainingCourses: React.FC = ({}) => {
   const styles = {
@@ -64,6 +59,7 @@ const TrainingCourses: React.FC = ({}) => {
     ],
   })
 
+
   async function handleDeleteTraining(trainingId: string, stringValue: string) {
     let trainingLinesFiltered = trainingLines.filter(
       (trl) => trl.trainingId._id === trainingId
@@ -90,7 +86,7 @@ const TrainingCourses: React.FC = ({}) => {
     setDialog({ message: '', isLoading: false })
   }
 
-  const newTrainingMutation = useMutation({
+  const addTrainingMutation = useMutation({
     mutationFn: (training: Training) => {
       return postTraining(training)
     },
@@ -136,9 +132,9 @@ const TrainingCourses: React.FC = ({}) => {
 
   if (trainingLinesQuery.isError || trainingsQuery.isError) {
     console.log(trainingLinesQuery.error || trainingsQuery.error)
-    alert('Error fetching data')
+    return <h1>Error</h1>
   }
-  if (trainingLinesQuery.isLoading && trainingsQuery.isLoading) {
+  if (trainingLinesQuery.isLoading || trainingsQuery.isLoading) {
     return <h1>Loading...</h1>
   }
 
@@ -192,7 +188,7 @@ const TrainingCourses: React.FC = ({}) => {
           <Button
             className="btn btn-success"
             onClick={() =>
-              newTrainingMutation.mutate({
+              addTrainingMutation.mutate({
                 title: 'MyTraining',
                 duration: 0,
                 timer: [],
