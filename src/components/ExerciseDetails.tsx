@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { getExercise } from '../service/exerciseService.tsx'
 import { Exercise } from '../utility/interface.tsx'
+import { useQuery } from '@tanstack/react-query'
 
 function ExerciseDetails() {
   const { id } = useParams()
@@ -13,13 +14,13 @@ function ExerciseDetails() {
     type: '',
   })
 
-  useEffect(() => {
-    const fetchExercise = async () => {
-      const { data: exercise } = await getExercise(id!)
-      setExercise(exercise)
-    }
-    fetchExercise()
-  }, [id])
+  const exerciseQuery = useQuery({
+    queryKey: ['exercise', 'exerciseDetails'],
+    queryFn: () => getExercise(id!).then((data) => data.data),
+    onSuccess(data: Exercise) {
+      setExercise(data)
+    },
+  })
 
   const styles = {
     exerciseTitle: {
@@ -29,6 +30,12 @@ function ExerciseDetails() {
       borderRadius: 10,
     },
     listItem: { fontSize: 25 },
+  }
+
+  if (exerciseQuery.isLoading) return <h1>Loading...</h1>
+  if (exerciseQuery.isError) {
+    console.log(exerciseQuery.error)
+    return <h1>Error</h1>
   }
 
   return (

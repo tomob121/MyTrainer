@@ -23,18 +23,19 @@ function Exercise() {
   })
 
   function nextExercise() {
+
     if (exerciseStage === trainingLines.length - 1)
       navigate(`/trainingCourses/${id}/end`)
     setExerciseStage(exerciseStage + 1)
     setIsRenderingRest(!isRenderingRest)
   }
 
-  function nextExerciseSkipRest() {
-    if (exerciseStage === trainingLines.length - 1)
-      navigate(`/trainingCourses/${id}/end`)
-    setExerciseStage(exerciseStage + 1)
-    setIsRenderingRest(false)
-  }
+  // function nextExerciseSkipRest() {
+  //   if (exerciseStage === trainingLines.length - 1)
+  //     navigate(`/trainingCourses/${id}/end`)
+  //   setExerciseStage(exerciseStage + 1)
+  //   setIsRenderingRest(false)
+  // }
 
   const styles = {
     paragraphBorder: {
@@ -82,9 +83,9 @@ function Exercise() {
         )}
 
         <div className="col-auto mt-5">
-          <div className="col-auto">
+          {/* <div className="col-auto">
             <Button onClick={() => nextExerciseSkipRest()}>Skip rest</Button>
-          </div>
+          </div> */}
           <div className="col-auto mt-2">
             <Button
               onClick={

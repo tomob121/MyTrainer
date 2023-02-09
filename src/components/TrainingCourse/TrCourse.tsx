@@ -13,7 +13,7 @@ import {
 } from '../../service/trainingLineService.tsx'
 import { Exercise, TrainingLine, Training } from '../../utility/interface.tsx'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
-import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueries, useMutation } from '@tanstack/react-query'
 import { UpdateTrainingLine } from '../../utility/interface.tsx'
 
 type LocationState = {
@@ -56,7 +56,6 @@ const TrCourse: React.FC = () => {
       borderRadius: 4,
     },
   }
-  const queryClient = useQueryClient()
 
   const [allExercisesQuery, trainingLinesQuery, trainingQuery] = useQueries({
     queries: [
@@ -79,6 +78,11 @@ const TrCourse: React.FC = () => {
         queryFn: () => getTraining(id!).then((data) => data.data),
         onSuccess(data: Training) {
           setTraining(data)
+        },
+        onError(err: any) {
+          console.log(err)
+          navigate('/trainingCourses')
+          alert('No trainign course found with that id')
         },
       },
     ],
@@ -129,15 +133,13 @@ const TrCourse: React.FC = () => {
         trainingLine.trainingId = trainingLine.trainingId._id
         trainingLine.exerciseId = trainingLine.exerciseId._id
       }
-      await putTrainingLineAll(putTrainingLines)
+      updateExerciseMutation.mutate(putTrainingLines)
     }
   }
+
   const updateExerciseMutation = useMutation({
     mutationFn: (trainingLines: UpdateTrainingLine[]) => {
       return putTrainingLineAll(trainingLines)
-    },
-    onSuccess(data) {
-      setTrainingLines((prevstate) => data.data)
     },
   })
 
@@ -187,7 +189,7 @@ const TrCourse: React.FC = () => {
     const index: number = trainingLinesData.indexOf(trainingLine!)
 
     if (parseInt(value) > parseInt('999')) value = '999'
-    if (value === '') value = '0'
+    if (name === 'reps' || name === 'restTime') if (value === '') value = '0'
 
     trainingLine![name] = value
     trainingLinesData.splice(index, 1, trainingLine!)

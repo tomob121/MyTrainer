@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 import { getTrainingLine } from '../service/trainingLineService.tsx'
 import { getTraining } from '../service/trainingService.tsx'
-import { getTrainings } from '../service/trainingService.tsx'
 import { TrainingLine, Training } from '../utility/interface.tsx'
+import { useQueries } from '@tanstack/react-query'
 
 const ExerciseEndScreen = () => {
   const { id } = useParams()
@@ -16,17 +16,27 @@ const ExerciseEndScreen = () => {
     timer: [],
   })
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data: trainingLine } = await getTrainingLine(id!)
-      setTrainingLine(trainingLine)
-      const { data: training } = await getTrainings()
-      setTraining(
-        training.filter((training: Training) => training._id === id!)[0]
-      )
-    }
-    fetchData()
-  }, [])
+  const [trainingLineQuer, trainingQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ['trainingLine', 'exerciseEndScreen'],
+        queryFn: () => getTrainingLine(id!).then((data) => data.data),
+        onSuccess(data: TrainingLine[]) {
+          setTrainingLine(data)
+        },
+      },
+      {
+        queryKey: ['training', 'exerciseEndScreen'],
+        queryFn: () => getTraining(id!).then((data) => data.data),
+        onSuccess(data: Training) {
+          setTraining(data)
+        },
+      },
+    ],
+  })
+
+  if (trainingLineQuer.isLoading || trainingQuery.isLoading)
+    return <h1>Loading...</h1>
 
   return (
     <Container>
