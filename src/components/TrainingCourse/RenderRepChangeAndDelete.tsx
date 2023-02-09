@@ -34,7 +34,7 @@ const RenderRepChangeAndDelete: React.FC<Props> = ({
               max={999}
               style={style.repNumberStyle}
               key={trainingLine._id}
-              onChange={(e) => handleLineChange(e, trainingLine._id)}
+              onChange={(e) => handleLineChange(e, trainingLine._id!)}
               value={trainingLine.reps}
               name="reps"
             />
@@ -53,7 +53,7 @@ const RenderRepChangeAndDelete: React.FC<Props> = ({
               style={style.repNumberStyle}
               value={trainingLine.note}
               placeholder={'Enter note here'}
-              onChange={(e) => handleLineChange(e, trainingLine._id)}
+              onChange={(e) => handleLineChange(e, trainingLine._id!)}
               name="note"
             />
           </div>

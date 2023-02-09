@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
-import { getTrainingLine } from '../service/trainingLineService.tsx'
-import { getTraining } from '../service/trainingService.tsx'
-import { TrainingLine, Training } from '../utility/interface.tsx'
+import { getTrainingLine } from '../service/trainingLineService'
+import { getTraining } from '../service/trainingService'
+import { TrainingLine, Training } from '../utility/interface'
 import { useQueries } from '@tanstack/react-query'
 
 const ExerciseEndScreen = () => {
@@ -20,14 +20,14 @@ const ExerciseEndScreen = () => {
     queries: [
       {
         queryKey: ['trainingLine'],
-        queryFn: () => getTrainingLine(id!).then((data) => data.data),
+        queryFn: () => getTrainingLine(id!).then((data: any) => data.data),
         onSuccess(data: TrainingLine[]) {
           setTrainingLine(data)
         },
       },
       {
         queryKey: ['training'],
-        queryFn: () => getTraining(id!).then((data) => data.data),
+        queryFn: () => getTraining(id!).then((data: any) => data.data),
         onSuccess(data: Training) {
           setTraining(data)
         },

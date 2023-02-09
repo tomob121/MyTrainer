@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { getTrainingLine } from '../service/trainingLineService.tsx'
+import { getTrainingLine } from '../service/trainingLineService'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Container, Button } from 'react-bootstrap'
-import CountDown from '../utility/CountDown.tsx'
-import { TrainingLine } from '../utility/interface.tsx'
+import CountDown from '../utility/CountDown'
+import { TrainingLine } from '../utility/interface'
 import { useQuery } from '@tanstack/react-query'
 
 function Exercise() {
@@ -16,7 +16,7 @@ function Exercise() {
 
   const trainingLineQuery = useQuery({
     queryKey: ['trainingLines'],
-    queryFn: () => getTrainingLine(id!).then((data) => data.data),
+    queryFn: () => getTrainingLine(id!).then((data: any) => data.data),
     onSuccess(data) {
       setTrainingLines(data)
     },

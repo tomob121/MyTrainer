@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Container } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import { getExercise } from '../service/exerciseService.tsx'
-import { Exercise } from '../utility/interface.tsx'
+import { getExercise } from '../service/exerciseService'
+import { Exercise } from '../utility/interface'
 import { useQuery } from '@tanstack/react-query'
 
 function ExerciseDetails() {
@@ -16,7 +16,7 @@ function ExerciseDetails() {
 
   const exerciseQuery = useQuery({
     queryKey: ['exercise'],
-    queryFn: () => getExercise(id!).then((data) => data.data),
+    queryFn: () => getExercise(id!).then((data: any) => data.data),
     onSuccess(data: Exercise) {
       setExercise(data)
     },

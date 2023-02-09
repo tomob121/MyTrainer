@@ -1,5 +1,5 @@
-import http from './http.ts'
-import { Training } from '../utility/interface.tsx'
+import http from './http'
+import { Training } from '../utility/interface'
 
 const apiEndpoint = 'http://localhost:3000/api/training'
 const trainingLineApiEndpoint = 'http://localhost:3000/api/trainingLine'

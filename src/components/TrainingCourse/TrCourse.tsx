@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Container } from 'react-bootstrap'
-import RightSideBar from './RightSideBar.tsx'
-import RenderRestTime from './RenderRestTime.tsx'
-import RenderRepChangeAndDelete from './RenderRepChangeAndDelete.tsx'
-import { getExercises } from '../../service/exerciseService.tsx'
-import { getTraining, putTraining } from '../../service/trainingService.tsx'
+import RightSideBar from './RightSideBar'
+import RenderRestTime from './RenderRestTime'
+import RenderRepChangeAndDelete from './RenderRepChangeAndDelete'
+import { getExercises } from '../../service/exerciseService'
+import { getTraining, putTraining } from '../../service/trainingService'
 import {
   deleteTrainingLine,
   postTrainingLine,
   getTrainingLine,
   putTrainingLineAll,
-} from '../../service/trainingLineService.tsx'
-import { Exercise, TrainingLine, Training } from '../../utility/interface.tsx'
+} from '../../service/trainingLineService'
+import { Exercise, TrainingLine, Training } from '../../utility/interface'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
-import { UpdateTrainingLine } from '../../utility/interface.tsx'
+import { UpdateTrainingLine } from '../../utility/interface'
 
 type LocationState = {
   isEditing: boolean
@@ -62,7 +62,7 @@ const TrCourse: React.FC = () => {
     queries: [
       {
         queryKey: ['allExercises'],
-        queryFn: () => getExercises().then((data) => data.data),
+        queryFn: () => getExercises().then((data: any) => data.data),
         onSuccess(data: Exercise[]) {
           setAllExercises(data)
         },
@@ -70,7 +70,7 @@ const TrCourse: React.FC = () => {
       },
       {
         queryKey: ['trainingLines'],
-        queryFn: () => getTrainingLine(id!).then((data) => data.data),
+        queryFn: () => getTrainingLine(id!).then((data: any) => data.data),
         onSuccess(data: TrainingLine[]) {
           setTrainingLines(data)
         },
@@ -78,7 +78,7 @@ const TrCourse: React.FC = () => {
       },
       {
         queryKey: ['training'],
-        queryFn: () => getTraining(id!).then((data) => data.data),
+        queryFn: () => getTraining(id!).then((data: any) => data.data),
         onSuccess(data: Training) {
           setTraining(data)
         },
@@ -161,7 +161,7 @@ const TrCourse: React.FC = () => {
     mutationFn: (trainingLine: UpdateTrainingLine) => {
       return postTrainingLine(trainingLine)
     },
-    onSuccess(data) {
+    onSuccess(data: any) {
       setTrainingLines((prevstate) => [...prevstate, data.data])
     },
   })
@@ -270,10 +270,7 @@ const TrCourse: React.FC = () => {
           )}
 
           {trainingLines.map((trainingLine) => (
-            <div
-              className={isEditing ? 'm-3 row' : 'm-3 row'}
-              key={trainingLine._id}
-            >
+            <div className={'m-3 row'} key={trainingLine._id}>
               {isEditing && (
                 <select
                   className="col-auto"

@@ -32,7 +32,7 @@ const RenderRestTime: React.FC<Props> = ({
             type={'number'}
             max={999}
             value={trainingLine.restTime}
-            onChange={(e) => handleLineChange(e, trainingLine._id)}
+            onChange={(e) => handleLineChange(e, trainingLine._id!)}
             name="restTime"
           />
         </div>

@@ -1,14 +1,14 @@
 import { Routes, Route } from 'react-router-dom'
-import AllExercises from './components/AllExercises.tsx'
-import Exercise from './components/Exercise.tsx'
-import NavBar from './components/NavBar.tsx'
-import ExerciseEndScreen from './components/ExerciseEndScreen.tsx'
+import AllExercises from './components/AllExercises'
+import Exercise from './components/Exercise'
+import NavBar from './components/NavBar'
+import ExerciseEndScreen from './components/ExerciseEndScreen'
 import { Suspense, lazy } from 'react'
-import ExerciseDetails from './components/ExerciseDetails.tsx'
-import TrCourse from './components/TrainingCourse/TrCourse.tsx'
+import ExerciseDetails from './components/ExerciseDetails'
+import TrCourse from './components/TrainingCourse/TrCourse'
 
 const TrainingCourses = lazy(
-  () => import('./components/TrainingCourses/TrainingCourses.tsx')
+  () => import('./components/TrainingCourses/TrainingCourses')
 )
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
         />
         <Route path="/trainingCourses/:id/start" element={<Exercise />} />
         <Route path="/trainingCourses/:id" element={<TrCourse />} />
+        <Route path="/editing" />
         <Route
           path="/trainingCourses"
           element={

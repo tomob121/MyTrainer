@@ -3,14 +3,14 @@ import { Container, Card, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
-import DialogConfirmation from './DialogConfirmation.tsx'
-import { getTrainingLines } from '../../service/trainingLineService.tsx'
-import { Training, TrainingLine } from '../../utility/interface.tsx'
+import DialogConfirmation from './DialogConfirmation'
+import { getTrainingLines } from '../../service/trainingLineService'
+import { Training, TrainingLine } from '../../utility/interface'
 import {
   deleteTraining,
   postTraining,
   getTrainings,
-} from '../../service/trainingService.tsx'
+} from '../../service/trainingService'
 import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
 
 const TrainingCourses: React.FC = ({}) => {
@@ -39,7 +39,7 @@ const TrainingCourses: React.FC = ({}) => {
       {
         queryKey: ['trainingLines'],
         queryFn: () =>
-          getTrainingLines().then((data) => {
+          getTrainingLines().then((data: any) => {
             return data.data
           }),
         onSuccess(data: TrainingLine[]) {
@@ -50,7 +50,7 @@ const TrainingCourses: React.FC = ({}) => {
       {
         queryKey: ['trainings'],
         queryFn: () =>
-          getTrainings().then((data) => {
+          getTrainings().then((data: any) => {
             return data.data
           }),
         onSuccess(data: Training[]) {
@@ -68,7 +68,7 @@ const TrainingCourses: React.FC = ({}) => {
     }
   })
 
-  async function handleDeleteTraining(trainingId: string, stringValue: string) {
+  function handleDeleteTraining(trainingId: string, stringValue: string) {
     let trainingLinesFiltered = trainingLines.filter(
       (trl) => trl.trainingId._id === trainingId
     )
@@ -87,13 +87,21 @@ const TrainingCourses: React.FC = ({}) => {
     })
     let filtered = trainings.filter((training) => training._id !== trainingId)
     setTrainings(filtered)
-    await deleteTraining(trainingId)
-    queryClient.invalidateQueries(['trainings'])
+    deleteTrainingMutation.mutate(trainingId)
   }
 
   const handleCancleDelete = () => {
     setDialog({ message: '', isLoading: false })
   }
+
+  const deleteTrainingMutation = useMutation({
+    mutationFn: (trainingId: string) => {
+      return deleteTraining(trainingId)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['trainings'])
+    },
+  })
 
   const addTrainingMutation = useMutation({
     mutationFn: (training: Training) => {
