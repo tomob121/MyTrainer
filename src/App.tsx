@@ -8,7 +8,9 @@ import './App.css'
 import ExerciseDetails from './components/ExerciseDetails.tsx'
 import TrCourse from './components/TrainingCourse/TrCourse.tsx'
 
-const TrainingCourses = lazy(() => import('./components/TrainingCourses.tsx'))
+const TrainingCourses = lazy(
+  () => import('./components/TrainingCourses/TrainingCourses.tsx')
+)
 
 function App() {
   document.title = 'MyTrainer'

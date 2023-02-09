@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 import DialogConfirmation from './DialogConfirmation.tsx'
-import { getTrainingLines } from '../service/trainingLineService.tsx'
-import { Training, TrainingLine } from '../utility/interface.tsx'
+import { getTrainingLines } from '../../service/trainingLineService.tsx'
+import { Training, TrainingLine } from '../../utility/interface.tsx'
 import {
   deleteTraining,
   postTraining,
   getTrainings,
-} from '../service/trainingService.tsx'
+} from '../../service/trainingService.tsx'
 import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
 
 const TrainingCourses: React.FC = ({}) => {
@@ -58,7 +58,6 @@ const TrainingCourses: React.FC = ({}) => {
       },
     ],
   })
-
 
   async function handleDeleteTraining(trainingId: string, stringValue: string) {
     let trainingLinesFiltered = trainingLines.filter(
