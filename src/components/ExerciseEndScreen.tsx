@@ -19,14 +19,14 @@ const ExerciseEndScreen = () => {
   const [trainingLineQuer, trainingQuery] = useQueries({
     queries: [
       {
-        queryKey: ['trainingLine', 'exerciseEndScreen'],
+        queryKey: ['trainingLine'],
         queryFn: () => getTrainingLine(id!).then((data) => data.data),
         onSuccess(data: TrainingLine[]) {
           setTrainingLine(data)
         },
       },
       {
-        queryKey: ['training', 'exerciseEndScreen'],
+        queryKey: ['training'],
         queryFn: () => getTraining(id!).then((data) => data.data),
         onSuccess(data: Training) {
           setTraining(data)

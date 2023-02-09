@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Container, Table } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { getExercises } from '../service/exerciseService.tsx'
@@ -29,12 +29,19 @@ const AllExercises: React.FC = () => {
   }
 
   const exercisesQuery = useQuery({
-    queryKey: ['exercises', 'allExercises'],
-    queryFn: () => getExercises().then((exercise) => exercise.data),
-    onSuccess(data) {
+    queryKey: ['exercises'],
+    queryFn: () => getExercises().then((data) => data.data),
+    onSuccess(data: Exercise[]) {
       setExercise(data)
     },
+    staleTime: Infinity,
   })
+
+
+
+  useEffect(() => {
+    if (exercisesQuery.data) setExercise(exercisesQuery.data!)
+  }, [])
 
   if (exercisesQuery.isLoading) return <h1>Loading...</h1>
   if (exercisesQuery.isError) {

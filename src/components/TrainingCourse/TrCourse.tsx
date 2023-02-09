@@ -13,7 +13,7 @@ import {
 } from '../../service/trainingLineService.tsx'
 import { Exercise, TrainingLine, Training } from '../../utility/interface.tsx'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
-import { useQueries, useMutation } from '@tanstack/react-query'
+import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
 import { UpdateTrainingLine } from '../../utility/interface.tsx'
 
 type LocationState = {
@@ -33,6 +33,7 @@ const TrCourse: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { id } = useParams()
+  const queryClient = useQueryClient()
   const style = {
     exerciseTitleStyle: {
       color: 'Black',
@@ -60,25 +61,28 @@ const TrCourse: React.FC = () => {
   const [allExercisesQuery, trainingLinesQuery, trainingQuery] = useQueries({
     queries: [
       {
-        queryKey: ['allExercises', 'trCourse'],
+        queryKey: ['allExercises'],
         queryFn: () => getExercises().then((data) => data.data),
         onSuccess(data: Exercise[]) {
           setAllExercises(data)
         },
+        staleTime: Infinity,
       },
       {
-        queryKey: ['trainingLines', 'trCourse'],
+        queryKey: ['trainingLines'],
         queryFn: () => getTrainingLine(id!).then((data) => data.data),
         onSuccess(data: TrainingLine[]) {
           setTrainingLines(data)
         },
+        staleTime: Infinity,
       },
       {
-        queryKey: ['training', 'trCourse'],
+        queryKey: ['training'],
         queryFn: () => getTraining(id!).then((data) => data.data),
         onSuccess(data: Training) {
           setTraining(data)
         },
+        staleTime: Infinity,
         onError(err: any) {
           console.log(err)
           navigate('/trainingCourses')
@@ -89,6 +93,15 @@ const TrCourse: React.FC = () => {
   })
 
   useEffect(() => {
+    if (
+      allExercisesQuery.data &&
+      trainingLinesQuery.data &&
+      trainingQuery.data
+    ) {
+      setAllExercises(allExercisesQuery.data)
+      setTrainingLines(trainingLinesQuery.data)
+      setTraining(trainingQuery.data)
+    }
     if (location.state) {
       const { isEditing } = location?.state as LocationState
       if (isEditing) {
@@ -97,6 +110,7 @@ const TrCourse: React.FC = () => {
     }
     return () => {
       deleteEmptyLines()
+      queryClient.invalidateQueries(['trainingLines'])
     }
   }, [])
 

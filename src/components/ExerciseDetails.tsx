@@ -15,11 +15,16 @@ function ExerciseDetails() {
   })
 
   const exerciseQuery = useQuery({
-    queryKey: ['exercise', 'exerciseDetails'],
+    queryKey: ['exercise'],
     queryFn: () => getExercise(id!).then((data) => data.data),
     onSuccess(data: Exercise) {
       setExercise(data)
     },
+    staleTime: Infinity,
+  })
+
+  useEffect(() => {
+    if (exerciseQuery.data) setExercise(exerciseQuery.data)
   })
 
   const styles = {

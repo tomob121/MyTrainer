@@ -15,15 +15,19 @@ function Exercise() {
   let navigate = useNavigate()
 
   const trainingLineQuery = useQuery({
-    queryKey: ['trainingLines', 'exercise'],
+    queryKey: ['trainingLines'],
     queryFn: () => getTrainingLine(id!).then((data) => data.data),
     onSuccess(data) {
       setTrainingLines(data)
     },
+    staleTime: Infinity,
+  })
+
+  useEffect(() => {
+    if (trainingLineQuery.data) setTrainingLines(trainingLineQuery.data)
   })
 
   function nextExercise() {
-
     if (exerciseStage === trainingLines.length - 1)
       navigate(`/trainingCourses/${id}/end`)
     setExerciseStage(exerciseStage + 1)

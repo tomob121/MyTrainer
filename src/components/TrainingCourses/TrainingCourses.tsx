@@ -37,7 +37,7 @@ const TrainingCourses: React.FC = ({}) => {
   const [trainingLinesQuery, trainingsQuery] = useQueries({
     queries: [
       {
-        queryKey: ['trainingLines', 'trainingCourses'],
+        queryKey: ['trainingLines'],
         queryFn: () =>
           getTrainingLines().then((data) => {
             return data.data
@@ -45,9 +45,10 @@ const TrainingCourses: React.FC = ({}) => {
         onSuccess(data: TrainingLine[]) {
           setTrainingLines(data)
         },
+        staleTime: Infinity,
       },
       {
-        queryKey: ['trainings', 'trainingCourses'],
+        queryKey: ['trainings'],
         queryFn: () =>
           getTrainings().then((data) => {
             return data.data
@@ -55,8 +56,16 @@ const TrainingCourses: React.FC = ({}) => {
         onSuccess(data: Training[]) {
           setTrainings(data)
         },
+        staleTime: Infinity,
       },
     ],
+  })
+
+  useEffect(() => {
+    if (trainingLinesQuery.data && trainingsQuery.data) {
+      setTrainingLines(trainingLinesQuery.data!)
+      setTrainings(trainingsQuery.data!)
+    }
   })
 
   async function handleDeleteTraining(trainingId: string, stringValue: string) {
@@ -79,6 +88,7 @@ const TrainingCourses: React.FC = ({}) => {
     let filtered = trainings.filter((training) => training._id !== trainingId)
     setTrainings(filtered)
     await deleteTraining(trainingId)
+    queryClient.invalidateQueries(['trainings'])
   }
 
   const handleCancleDelete = () => {
@@ -140,7 +150,7 @@ const TrainingCourses: React.FC = ({}) => {
   return (
     <Container>
       <div className="row mt-3">
-        <div className="col">
+        <div className="col align-self-center">
           {trainings.map((training) => (
             <Card
               className="p-2 m-2 bg-primary card"
