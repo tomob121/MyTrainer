@@ -4,7 +4,6 @@ import Exercise from './components/Exercise.tsx'
 import NavBar from './components/NavBar.tsx'
 import ExerciseEndScreen from './components/ExerciseEndScreen.tsx'
 import { Suspense, lazy } from 'react'
-import './App.css'
 import ExerciseDetails from './components/ExerciseDetails.tsx'
 import TrCourse from './components/TrainingCourse/TrCourse.tsx'
 
