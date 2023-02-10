@@ -66,7 +66,7 @@ const TrCourse: React.FC = () => {
         onSuccess(data: Exercise[]) {
           setAllExercises(data)
         },
-        staleTime: Infinity,
+        // staleTime: Infinity,
       },
       {
         queryKey: ['trainingLines'],
@@ -74,7 +74,7 @@ const TrCourse: React.FC = () => {
         onSuccess(data: TrainingLine[]) {
           setTrainingLines(data)
         },
-        staleTime: Infinity,
+        // staleTime: Infinity,
       },
       {
         queryKey: ['training'],
@@ -82,7 +82,7 @@ const TrCourse: React.FC = () => {
         onSuccess(data: Training) {
           setTraining(data)
         },
-        staleTime: Infinity,
+        // staleTime: Infinity,
         onError(err: any) {
           console.log(err)
           navigate('/trainingCourses')
@@ -93,15 +93,6 @@ const TrCourse: React.FC = () => {
   })
 
   useEffect(() => {
-    if (
-      allExercisesQuery.data &&
-      trainingLinesQuery.data &&
-      trainingQuery.data
-    ) {
-      setAllExercises(allExercisesQuery.data)
-      setTrainingLines(trainingLinesQuery.data)
-      setTraining(trainingQuery.data)
-    }
     if (location.state) {
       const { isEditing } = location?.state as LocationState
       if (isEditing) {

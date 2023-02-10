@@ -58,14 +58,6 @@ const TrainingCourses: React.FC = ({}) => {
       },
     ],
   })
-  console.log(trainings)
-  console.log(trainingLines)
-  // useEffect(() => {
-  //   if (trainingLinesQuery.data && trainingsQuery.data) {
-  //     setTrainingLines(trainingLinesQuery.data)
-  //     setTrainings(trainingsQuery.data)
-  //   }
-  // })
 
   function handleDeleteTraining(trainingId: string, stringValue: string) {
     let trainingLinesFiltered = trainingLines.filter(
