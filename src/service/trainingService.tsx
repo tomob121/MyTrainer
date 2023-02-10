@@ -27,6 +27,6 @@ export function putTraining(id: string, exercise: PostTraining) {
 }
 
 export function deleteTraining(id: string) {
-  http.delete(trainingLineApiEndpoint + '/all/' + id)
   return http.delete(apiEndpoint + '/' + id)
 }
+

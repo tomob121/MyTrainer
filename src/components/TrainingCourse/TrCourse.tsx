@@ -110,7 +110,6 @@ const TrCourse: React.FC = () => {
     }
     return () => {
       deleteEmptyLines()
-      queryClient.invalidateQueries(['trainingLines'])
     }
   }, [])
 

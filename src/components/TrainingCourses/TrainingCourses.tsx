@@ -45,7 +45,6 @@ const TrainingCourses: React.FC = ({}) => {
         onSuccess(data: TrainingLine[]) {
           setTrainingLines(data)
         },
-        staleTime: Infinity,
       },
       {
         queryKey: ['trainings'],
@@ -56,17 +55,17 @@ const TrainingCourses: React.FC = ({}) => {
         onSuccess(data: Training[]) {
           setTrainings(data)
         },
-        staleTime: Infinity,
       },
     ],
   })
-
-  useEffect(() => {
-    if (trainingLinesQuery.data && trainingsQuery.data) {
-      setTrainingLines(trainingLinesQuery.data!)
-      setTrainings(trainingsQuery.data!)
-    }
-  })
+  console.log(trainings)
+  console.log(trainingLines)
+  // useEffect(() => {
+  //   if (trainingLinesQuery.data && trainingsQuery.data) {
+  //     setTrainingLines(trainingLinesQuery.data)
+  //     setTrainings(trainingsQuery.data)
+  //   }
+  // })
 
   function handleDeleteTraining(trainingId: string, stringValue: string) {
     let trainingLinesFiltered = trainingLines.filter(
@@ -85,8 +84,7 @@ const TrainingCourses: React.FC = ({}) => {
       message: '',
       isLoading: false,
     })
-    let filtered = trainings.filter((training) => training._id !== trainingId)
-    setTrainings(filtered)
+
     deleteTrainingMutation.mutate(trainingId)
   }
 
@@ -148,9 +146,10 @@ const TrainingCourses: React.FC = ({}) => {
   }
 
   if (trainingLinesQuery.isError || trainingsQuery.isError) {
-    console.log(trainingLinesQuery.error || trainingsQuery.error)
+    console.log(trainingsQuery.error)
     return <h1>Error</h1>
   }
+  console.log(trainingLinesQuery.isLoading)
   if (trainingLinesQuery.isLoading || trainingsQuery.isLoading) {
     return <h1>Loading...</h1>
   }

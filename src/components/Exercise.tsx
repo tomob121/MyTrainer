@@ -11,7 +11,7 @@ function Exercise() {
   const [trainingLines, setTrainingLines] = useState<TrainingLine[]>([])
   const [exerciseStage, setExerciseStage] = useState(0)
   const [isRenderingRest, setIsRenderingRest] = useState(false)
-  const [exerciseDuration, setExerciseDuration] = useState(0)
+  // const [exerciseDuration, setExerciseDuration] = useState(0)
   let navigate = useNavigate()
 
   const trainingLineQuery = useQuery({
@@ -25,7 +25,7 @@ function Exercise() {
 
   useEffect(() => {
     if (trainingLineQuery.data) setTrainingLines(trainingLineQuery.data)
-  })
+  }, [trainingLineQuery.data])
 
   function nextExercise() {
     if (exerciseStage === trainingLines.length - 1)

@@ -1,17 +1,18 @@
 import { useState } from 'react'
 
-type CountDown = {
+type CountDownProps = {
   time: number
   afterCountDown: () => void
 }
 
-function CountDown({ time, afterCountDown }: CountDown) {
-  const [countDown, setCountDown] = useState(time)
+function CountDown({ time, afterCountDown }: CountDownProps) {
+  const [countDownTime, setCountDown] = useState(time)
 
-  if (afterCountDown) if (countDown === 0) setTimeout(() => afterCountDown())
+  if (afterCountDown)
+    if (countDownTime === 0) setTimeout(() => afterCountDown())
 
-  setTimeout(() => setCountDown(countDown - 1), 1000)
-  return <div>{countDown}</div>
+  setTimeout(() => setCountDown(countDownTime - 1), 1000)
+  return <div>{countDownTime}</div>
 }
 
 export default CountDown
