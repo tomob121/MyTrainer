@@ -1,5 +1,6 @@
 import http from './http'
 import { Exercise } from '../utility/interface'
+import { exercises } from './allExercises'
 
 const apiEndpoint = 'http://localhost:3000/api/exercise'
 
@@ -10,11 +11,11 @@ interface PostExercise {
 }
 
 export function getExercises() {
-  return http.get(apiEndpoint)
+  return exercises
 }
 
 export function getExercise(id: string) {
-  return http.get(apiEndpoint + '/' + id)
+  return exercises.filter((exercise) => exercise._id === id)
 }
 
 export function postExercise(exercise: PostExercise) {

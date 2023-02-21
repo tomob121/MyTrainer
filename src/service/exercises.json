@@ -1,0 +1,232 @@
+[{
+  "_id": {
+    "$oid": "6384a9c95cc12ea42d040af2"
+  },
+  "type": "",
+  "bodyPart": "",
+  "title": ""
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456cc"
+  },
+  "title": "Bench Press",
+  "bodyPart": "Arms",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456cd"
+  },
+  "title": "Pull up",
+  "bodyPart": "Arms",
+  "type": "Pull"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456ce"
+  },
+  "title": "Squat",
+  "bodyPart": "Legs",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456cf"
+  },
+  "title": "Dead Lift",
+  "bodyPart": "Legs",
+  "type": "Pull"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d0"
+  },
+  "title": "Goblet Squat",
+  "bodyPart": "Legs",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d1"
+  },
+  "title": "Front Squat",
+  "bodyPart": "Legs",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d2"
+  },
+  "title": "Back Squat",
+  "bodyPart": "Legs",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d3"
+  },
+  "title": "Overhead Squat",
+  "bodyPart": "Legs",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d4"
+  },
+  "title": "Split Squat",
+  "bodyPart": "Legs",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d5"
+  },
+  "title": "Unilateral Squat",
+  "bodyPart": "Legs",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d6"
+  },
+  "title": "Lunges",
+  "bodyPart": "Legs",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d7"
+  },
+  "title": "Shoulder Press",
+  "bodyPart": "Arms",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d8"
+  },
+  "title": "Push Press",
+  "bodyPart": "Arms",
+  "type": "Push"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456d9"
+  },
+  "title": "Sumo Dead Lift",
+  "bodyPart": "Legs",
+  "type": "Pull"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456da"
+  },
+  "title": "One Leag Dead Lift",
+  "bodyPart": "Legs",
+  "type": "Pull"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456db"
+  },
+  "title": "Chin Up",
+  "bodyPart": "Arms",
+  "type": "Pull"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456dc"
+  },
+  "title": "Inverted Row",
+  "bodyPart": "Arms",
+  "type": "Pull"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456dd"
+  },
+  "title": "Thruster",
+  "bodyPart": "Full Body",
+  "type": "Full Body"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456de"
+  },
+  "title": "Sumo Dead Lift High Pull",
+  "bodyPart": "Full Body",
+  "type": "Full Body"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456df"
+  },
+  "title": "Clean",
+  "bodyPart": "Full Body",
+  "type": "Full Body"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e0"
+  },
+  "title": "Snatch",
+  "bodyPart": "Full Body",
+  "type": "Full Body"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e1"
+  },
+  "title": "Farmer Walk",
+  "bodyPart": "Full Body",
+  "type": "Full Body"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e2"
+  },
+  "title": "Waiter Walk",
+  "bodyPart": "Full Body",
+  "type": "Full Body"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e3"
+  },
+  "title": "Suitcase Walk",
+  "bodyPart": "Full Body",
+  "type": "Full Body"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e4"
+  },
+  "title": "Turkish Get UP",
+  "bodyPart": "Full Body",
+  "type": "Full Body"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e5"
+  },
+  "title": "Kettelbell Swing",
+  "bodyPart": "Full Body",
+  "type": "Full Body"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e6"
+  },
+  "title": "Dead Bug",
+  "bodyPart": "Full Body",
+  "type": "Relax"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e7"
+  },
+  "title": "Baby Roll",
+  "bodyPart": "Full Body",
+  "type": "Relax"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e8"
+  },
+  "title": "Crawl Forward",
+  "bodyPart": "Core",
+  "type": "Endure"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456e9"
+  },
+  "title": "Crawl Side Ways",
+  "bodyPart": "Core",
+  "type": "Endure"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456ea"
+  },
+  "title": "Plank",
+  "bodyPart": "Core",
+  "type": "Endure"
+},{
+  "_id": {
+    "$oid": "63891499a3aa2db3317456eb"
+  },
+  "title": "Antirotation",
+  "bodyPart": "Core",
+  "type": "Endure"
+}]

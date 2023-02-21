@@ -32,7 +32,7 @@ const AllExercises: React.FC = () => {
 
   const exercisesQuery = useQuery({
     queryKey: ['exercises'],
-    queryFn: () => getExercises().then((data: any) => data.data),
+    queryFn: () => getExercises(),
     onSuccess(data: Exercise[]) {
       setExercise(data)
     },

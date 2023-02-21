@@ -16,7 +16,7 @@ function ExerciseDetails() {
 
   const exerciseQuery = useQuery({
     queryKey: ['exercise'],
-    queryFn: () => getExercise(id!).then((data: any) => data.data),
+    queryFn: () => getExercise(id!),
     onSuccess(data: Exercise) {
       setExercise(data)
     },

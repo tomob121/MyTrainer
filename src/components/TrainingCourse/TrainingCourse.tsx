@@ -65,7 +65,7 @@ const TrCourse: React.FC = () => {
     queries: [
       {
         queryKey: ['allExercises'],
-        queryFn: () => getExercises().then((data: any) => data.data),
+        queryFn: () => getExercises(),
         onSuccess(data: Exercise[]) {
           setAllExercises(data)
         },
