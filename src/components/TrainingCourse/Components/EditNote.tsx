@@ -19,7 +19,7 @@ const Note: React.FC<NoteProps> = ({
     <input
       className="form-control"
       onFocus={(e) => e.target.select()}
-      maxLength={80}
+      maxLength={50}
       style={style.repNumberStyle}
       value={trainingLine.note}
       placeholder={'Enter note here'}
