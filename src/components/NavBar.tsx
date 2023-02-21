@@ -11,7 +11,7 @@ const NavBar = () => {
       }}
       className="navbar navbar-expand"
     >
-      <div className="">
+      <div>
         <ul className="navbar-nav ">
           <NavLink
             style={{ color: 'white' }}

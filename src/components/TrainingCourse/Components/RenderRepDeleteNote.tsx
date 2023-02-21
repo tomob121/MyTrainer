@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
-import { TrainingLine } from './../../utility/interface'
+import { TrainingLine } from '../../../utility/interface'
 
 interface Props {
   isEditing: boolean
@@ -14,7 +14,7 @@ interface Props {
   handleDelete: (e: any) => void
 }
 
-const RenderRepChangeAndDelete: React.FC<Props> = ({
+const RenderRepDeleteNote: React.FC<Props> = ({
   isEditing,
   style,
   trainingLine,
@@ -23,10 +23,10 @@ const RenderRepChangeAndDelete: React.FC<Props> = ({
   handleDelete,
 }) => {
   return (
-    <div className="col-auto row">
+    <>
       {isEditing ? (
-        <div className="row">
-          <div className="col-auto">
+        <div className="row row-cols-3 ">
+          <div className="col m-1">
             <input
               onFocus={handleFocus}
               min={0}
@@ -38,6 +38,8 @@ const RenderRepChangeAndDelete: React.FC<Props> = ({
               value={trainingLine.reps}
               name="reps"
             />
+          </div>
+          <div className="col">
             <Button
               onClick={() => handleDelete(trainingLine._id)}
               style={{ marginLeft: 30 }}
@@ -46,8 +48,9 @@ const RenderRepChangeAndDelete: React.FC<Props> = ({
               Delete
             </Button>
           </div>
-          <div className="col-2">
+          <div className="col">
             <input
+              className=""
               onFocus={handleFocus}
               maxLength={80}
               style={style.repNumberStyle}
@@ -59,24 +62,20 @@ const RenderRepChangeAndDelete: React.FC<Props> = ({
           </div>
         </div>
       ) : (
-        <div className="col-auto row">
-          <div className="col-auto" style={style.repNumberStyle}>
-            {trainingLine.reps}
+        <div className="">
+          <div className="col">
+            <div style={style.repNumberStyle}>{trainingLine.reps}</div>
+          </div>
+          <div style={style.toolTipMessage}>
+            {trainingLine.exerciseId.type &&
+            trainingLine.exerciseId.type.toLowerCase() === 'endure'
+              ? 'Seconds'
+              : 'Reps'}
           </div>
         </div>
       )}
-      {isEditing ? (
-        ''
-      ) : (
-        <div className="col-auto pt-1" style={style.toolTipMessage}>
-          {trainingLine.exerciseId.type &&
-          trainingLine.exerciseId.type.toLowerCase() === 'endure'
-            ? 'Seconds'
-            : 'Reps'}
-        </div>
-      )}
-    </div>
+    </>
   )
 }
 
-export default RenderRepChangeAndDelete
+export default RenderRepDeleteNote

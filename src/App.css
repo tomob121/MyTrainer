@@ -1,0 +1,66 @@
+
+
+.button {
+    width: 125px !important;
+}
+
+
+.restTime {
+    width: 150px !important;
+}
+
+.numberInput {
+    font-Size: 19;
+    border-Radius: 5px;
+    border-Width: 1px;
+    text-Align: center;
+    width: 70px;
+    font-size: 19px;
+}
+
+.numberInput:focus {
+    border-width: 1px !important;
+    background-color: whitesmoke; 
+    font-size: 19px;
+}
+
+.selectBox {
+    height: 30px !important;
+    border-radius: 5px !important;
+    
+}
+
+.restTime {
+    font-style: italic;
+    opacity: 0.5;
+}
+
+.noteHover {
+    cursor: pointer;
+    width: 40px;
+}
+
+.noteHover:hover {
+    
+}
+
+.backBox {
+  position: relative;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0);  
+}
+
+.window {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 7%;
+    background-color: whitesmoke;
+}

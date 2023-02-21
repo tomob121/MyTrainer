@@ -5,7 +5,9 @@ import NavBar from './components/NavBar'
 import ExerciseEndScreen from './components/ExerciseEndScreen'
 import { Suspense, lazy } from 'react'
 import ExerciseDetails from './components/ExerciseDetails'
-import TrCourse from './components/TrainingCourse/TrCourse'
+import TrCourse from './components/TrainingCourse/TrainingCourse'
+import TestGround from './components/TestGround'
+import './App.css'
 
 const TrainingCourses = lazy(
   () => import('./components/TrainingCourses/TrainingCourses')
@@ -26,7 +28,6 @@ function App() {
         />
         <Route path="/trainingCourses/:id/start" element={<Exercise />} />
         <Route path="/trainingCourses/:id" element={<TrCourse />} />
-        <Route path="/editing" />
         <Route
           path="/trainingCourses"
           element={

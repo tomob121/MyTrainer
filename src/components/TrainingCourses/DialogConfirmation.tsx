@@ -3,13 +3,13 @@ import React from 'react'
 interface Props {
   message: string
   usingCancelDelete: () => void
-  usingDeleteTrainign: () => void
+  usingDeleteTraining: () => void
 }
 
 const DialogConfirmation: React.FC<Props> = ({
   message,
   usingCancelDelete,
-  usingDeleteTrainign,
+  usingDeleteTraining,
 }) => {
   return (
     <div
@@ -39,7 +39,7 @@ const DialogConfirmation: React.FC<Props> = ({
         <h3 style={{ color: '#111' }}>{message}</h3>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <button
-            onClick={() => usingDeleteTrainign()}
+            onClick={() => usingDeleteTraining()}
             style={{
               background: 'red',
               color: 'white',

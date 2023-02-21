@@ -8,17 +8,23 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // default: true
+    },
+  },
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-  <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
-      <App />
-      <ReactQueryDevtools />
-    </QueryClientProvider>
-  </BrowserRouter>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <App />
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </BrowserRouter>
   </React.StrictMode>
 )
 

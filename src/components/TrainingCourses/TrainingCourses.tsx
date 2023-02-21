@@ -141,7 +141,6 @@ const TrainingCourses: React.FC = ({}) => {
     console.log(trainingsQuery.error)
     return <h1>Error</h1>
   }
-  console.log(trainingLinesQuery.isLoading)
   if (trainingLinesQuery.isLoading || trainingsQuery.isLoading) {
     return <h1>Loading...</h1>
   }
@@ -209,7 +208,7 @@ const TrainingCourses: React.FC = ({}) => {
       </div>
       {dialog.isLoading && (
         <DialogConfirmation
-          usingDeleteTrainign={() =>
+          usingDeleteTraining={() =>
             handleDeleteTraining(currentId.current, 'yes')
           }
           usingCancelDelete={handleCancleDelete}

@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom'
 import { getExercises } from '../service/exerciseService'
 import { Exercise } from '../utility/interface'
 import { useQuery } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 
 const AllExercises: React.FC = () => {
   const [exercises, setExercise] = useState<Exercise[]>([])
   const [searchValue, setSearchValue] = useState('')
+  const navigate = useNavigate()
 
   const filtered = useMemo(() => {
     return exercises.filter((exercise) => {
@@ -37,8 +39,6 @@ const AllExercises: React.FC = () => {
     staleTime: Infinity,
   })
 
-
-
   useEffect(() => {
     if (exercisesQuery.data) setExercise(exercisesQuery.data!)
   }, [])
@@ -57,14 +57,14 @@ const AllExercises: React.FC = () => {
             borderRadius: '4px',
           }}
           autoFocus
-          className="m-3 col-8"
+          className="m-3 col-8 "
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           type="text"
-          placeholder="Name"
+          placeholder="Enter name"
         />
         <div className="col-8">
-          <Table style={styles.borderStyle}>
+          <Table className="table table-bordered table-hover border-dark">
             <thead>
               <tr>
                 <th>Name</th>
@@ -72,19 +72,21 @@ const AllExercises: React.FC = () => {
                 <th>Type</th>
               </tr>
             </thead>
-            {filtered.map((exercise) => (
-              <tbody key={exercise._id}>
-                <tr>
-                  <td>
-                    <Link to={`/exercises/${exercise._id}`}>
-                      {exercise.title}
-                    </Link>
-                  </td>
-                  <td>{exercise.bodyPart}</td>
-                  <td>{exercise.type}</td>
-                </tr>
-              </tbody>
-            ))}
+            {filtered
+              .filter((exericse) => exericse._id !== '6384a9c95cc12ea42d040af2')
+              .map((exercise) => (
+                <tbody key={exercise._id}>
+                  <tr
+                    className="table-hover"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate(`/exercises/${exercise._id}`)}
+                  >
+                    <td>{exercise.title}</td>
+                    <td>{exercise.bodyPart}</td>
+                    <td>{exercise.type}</td>
+                  </tr>
+                </tbody>
+              ))}
           </Table>
         </div>
       </div>

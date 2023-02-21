@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Container } from 'react-bootstrap'
-import RightSideBar from './RightSideBar'
-import RenderRestTime from './RenderRestTime'
-import RenderRepChangeAndDelete from './RenderRepChangeAndDelete'
+import RightSideBar from './Components/RightSideBar'
+import RestTime from './Components/RestTime'
+import RenderRepDeleteNote from './Components/RenderRepDeleteNote'
 import { getExercises } from '../../service/exerciseService'
 import { getTraining, putTraining } from '../../service/trainingService'
 import {
@@ -15,6 +15,8 @@ import { Exercise, TrainingLine, Training } from '../../utility/interface'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
 import { UpdateTrainingLine } from '../../utility/interface'
+import EditingCourse from './EditingCourse'
+import DisplayCourse from './DisplayCourse'
 
 type LocationState = {
   isEditing: boolean
@@ -45,9 +47,10 @@ const TrCourse: React.FC = () => {
       fontSize: 19,
       borderRadius: '3px',
       borderWidth: 1,
-      textAlign: 'center',
+      textAlign: '',
     },
     toolTipMessage: {
+      paddingTop: 5,
       fontStyle: 'italic',
       opacity: 0.5,
     },
@@ -86,7 +89,7 @@ const TrCourse: React.FC = () => {
         onError(err: any) {
           console.log(err)
           navigate('/trainingCourses')
-          alert('No trainign course found with that id')
+          alert('No training course found with that id')
         },
       },
     ],
@@ -184,7 +187,7 @@ const TrCourse: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     trainingLineId: string
   ) {
-    let { name, value } = e.target
+    let { name, value, type } = e.target
 
     let trainingLinesData = trainingLines
     let trainingLine: any = trainingLines.find((trainingLine) => {
@@ -240,79 +243,40 @@ const TrCourse: React.FC = () => {
   )
     return <h1>Loading...</h1>
 
-  return (
-    <Container>
-      <div className="row pt-3">
-        <div className="col">
-          {isEditing ? (
-            <h1 className="pb-5">
-              <input
-                onKeyDown={(e) => handleEnter(e)}
-                style={style.h1element}
-                maxLength={50}
-                value={training?.title}
-                onChange={(e) => handleTitleChange(e)}
-                name="title"
-              />
-            </h1>
-          ) : (
-            <h1 className="pb-5">{training?.title}</h1>
-          )}
-
-          {trainingLines.map((trainingLine) => (
-            <div className={'m-3 row'} key={trainingLine._id}>
-              {isEditing && (
-                <select
-                  className="col-auto"
-                  value={trainingLine.exerciseId.title}
-                  onChange={(e) => handleSelect(e, trainingLine)}
-                >
-                  {allExercises.map((exercise) => (
-                    <option key={exercise._id}>{exercise.title}</option>
-                  ))}
-                </select>
-              )}
-              {isEditing === false && (
-                <div className="col-auto" style={style.exerciseTitleStyle}>
-                  {trainingLine.exerciseId.title}
-                </div>
-              )}
-              <RenderRepChangeAndDelete
-                isEditing={isEditing}
-                style={style}
-                trainingLine={trainingLine}
-                handleFocus={(e) => e.target.select()}
-                handleLineChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleLineChange(e, trainingLine._id!)
-                }
-                handleDelete={handleDelete}
-              />
-              {!isEditing && (
-                <div className="col pt-1">
-                  {trainingLine.note && 'Note:'} {trainingLine.note}
-                </div>
-              )}
-              <RenderRestTime
-                isEditing={isEditing}
-                style={style}
-                trainingLine={trainingLine}
-                handleFocus={(e) => e.target.select()}
-                handleLineChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleLineChange(e, trainingLine._id!)
-                }
-              />
-            </div>
-          ))}
-        </div>
-        <RightSideBar
-          training={training}
-          handleEdit={() => handleEdit()}
-          handleAddExercise={addExerciseMutation.mutate}
-          handleStart={() => handleStart(trainingLines)}
+  if (isEditing) {
+    return (
+      <Container className="container mt-3">
+        <EditingCourse
+          handleDelete={() => handleDelete(id!)}
+          handleEnter={handleEnter}
+          handleLineChange={handleLineChange}
+          handleSelect={handleSelect}
+          handleTitleChange={handleTitleChange}
           isEditing={isEditing}
-          id={id!}
+          allExercises={allExercises}
+          training={training}
+          trainingLines={trainingLines}
+          addExerciseMutation={addExerciseMutation}
+          handleEdit={handleEdit}
+          handleStart={handleStart}
         />
-      </div>
+      </Container>
+    )
+  }
+
+  return (
+    <Container className="container mt-3">
+      <DisplayCourse
+        addExerciseMutation={addExerciseMutation}
+        handleEdit={handleEdit}
+        handleLineChange={handleLineChange}
+        handleStart={handleStart}
+        id={id!}
+        isEditing={isEditing}
+        style={style}
+        training={training}
+        trainingLines={trainingLines}
+      />
     </Container>
   )
 }
