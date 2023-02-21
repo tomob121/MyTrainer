@@ -15,7 +15,7 @@ export function getExercises() {
 }
 
 export function getExercise(id: string) {
-  return exercises.filter((exercise) => exercise._id === id)
+  return exercises.filter((exercise) => exercise._id === id)[0]
 }
 
 export function postExercise(exercise: PostExercise) {
